@@ -1,0 +1,108 @@
+generator client {
+    provider        = "prisma-client-js"
+    previewFeatures = ["fullTextSearch", "fullTextIndex"]
+}
+
+datasource db {
+    provider = "mysql"
+    url      = env("DATABASE_URL")
+}
+
+// Enums
+enum Settings {
+    SERVER_SETTINGS
+}
+
+enum Stock {
+    IN_STOCK
+    OUT_STOCK
+    DISCONTINUED
+    HIDDEN
+}
+
+enum PaymentStatus {
+    UNPAID
+    PAID
+    FAILED
+    CANCELED
+    REFUNDED
+}
+
+enum ShippingStatus {
+    PENDING
+    SHIPPED
+    DELIVERED
+    CANCELED
+    UNKNOWN
+}
+
+// Database
+model Admin {
+    id        String   @id @default(uuid())
+    name      String   @default("Admin")
+    email     String   @unique
+    pw_bcrypt String
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+}
+
+model System {
+    id           Settings @id @default(SERVER_SETTINGS)
+    currency     String   @default("CAD")
+    shipping     String   @default("CA,US")
+    shippingCost Int      @default(1500) // Amount in cents
+    purchase     Boolean  @default(true)
+    ratings      Boolean  @default(true)
+}
+
+model Products {
+    id          String    @id @default(uuid())
+    title       String
+    subtitle    String?
+    description String
+    images      String    @db.VarChar(250) // String[] - split by ","
+    tags        String    @db.VarChar(250) // String[] - split by ","
+    price       Int // Amount in cents
+    ratings     Ratings[]
+    stock       Stock     @default(IN_STOCK)
+    createdAt   DateTime  @default(now())
+    updatedAt   DateTime  @updatedAt
+
+    @@fulltext([title])
+    @@fulltext([title, subtitle])
+}
+
+model Ratings {
+    id          String    @id @default(uuid())
+    user        String
+    name        String    @default("Anonymous")
+    description String?
+    rating      Float
+    product     Products? @relation(fields: [productID], references: [id])
+    productID   String?
+    createdAt   DateTime  @default(now())
+    updatedAt   DateTime  @updatedAt
+
+    @@unique([user, productID])
+}
+
+model Orders {
+    id            String         @id @default(uuid())
+    productID     String         @db.VarChar(450) // String[] - split by ","
+    transactionID String         @unique
+    userID        String
+    status        PaymentStatus  @default(UNPAID)
+    quantity      String         @db.VarChar(150) // String[] - split by ","
+    amount        Int // Amount in cents
+    email         String
+    shipping      ShippingStatus @default(UNKNOWN)
+    shippingName  String
+    city          String
+    country       String
+    line1         String
+    line2         String
+    postal        String
+    state         String
+    createdAt     DateTime       @default(now())
+    updatedAt     DateTime       @updatedAt
+}

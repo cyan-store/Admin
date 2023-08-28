@@ -1,0 +1,6 @@
+# Development
+/dist
+/node_modules
+
+# Private
+.env
