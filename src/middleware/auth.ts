@@ -1,9 +1,11 @@
 import type { FastifyReply, FastifyRequest } from "fastify";
 
 export default async (req: FastifyRequest, res: FastifyReply) => {
-    try {
-        await req.jwtVerify();
-    } catch (e) {
-        return res.send(e);
+    // prettier-ignore
+    try { await req.jwtVerify(); } catch (e) {
+        return res.code(401).send({
+            statusCode: 401,
+            message: "Invalid token."
+        });
     }
 };
