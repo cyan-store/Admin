@@ -1,73 +1,89 @@
 import type { FastifyReply, FastifyRequest } from "fastify";
-import consola from "consola";
+import type { Stock } from "@prisma/client";
 import client from "../database/prisma";
+import consola from "consola";
+import Joi from "joi";
 
-interface FilterOptions {
-    where: {
-        title?: {
-            search: string;
-        };
-    };
-
-    orderBy?: { updatedAt: string };
-    _count?: true;
-    take?: number;
-    skip?: number;
+interface productInfo {
+    title?: string;
+    subtitle?: string;
+    description?: string;
+    images?: string;
+    tags?: string;
+    price?: number;
+    stock?: string;
 }
 
-export const productsList = async (req: FastifyRequest, res: FastifyReply) => {
-    const query = req.query as {
-        search?: string;
-        page?: string;
-        sort?: string;
-    };
+const productSchema = Joi.object({
+    title: Joi.string().required().min(3).max(20),
+    subtitle: Joi.string().required().min(0).max(50),
+    description: Joi.string().required().min(10).max(150),
+    images: Joi.string().required().min(0).max(249),
+    tags: Joi.string().required().min(0).max(50),
+    price: Joi.number().required().min(100).max(100000),
+    stock: Joi.string().required().max(20),
+});
 
-    const page = parseInt(query?.page) || 0;
-    const pagelen = 10;
-    const search = query?.search || "";
-    const sort = query?.sort || "asc";
-
-    // Validate request
-    if (page < 0 || page > 50000) {
-        return res.code(400).send({
+function validateProductInfo(res: FastifyReply, body: productInfo) {
+    if (!body) {
+        res.code(400).send({
             statusCode: 400,
-            message: "Invalid page.",
+            message: "Missing body.",
         });
+
+        return false;
     }
 
-    if (!["asc", "desc"].includes(sort)) {
-        return res.code(400).send({
+    const { error } = productSchema.validate(body);
+
+    if (error) {
+        consola.warn(`[products] ${error}`);
+
+        res.code(400).send({
             statusCode: 400,
-            message: "Invalid sort.",
+            message: "Invalid product info.",
         });
+
+        return false;
     }
 
-    // Filter request
-    const count: FilterOptions = { where: {}, _count: true };
-    const options: FilterOptions = {
-        where: {},
-        orderBy: { updatedAt: sort },
+    if (
+        !["IN_STOCK", "OUT_STOCK", "DISCONTINUED", "HIDDEN"].includes(
+            body.stock,
+        )
+    ) {
+        res.code(400).send({
+            statusCode: 400,
+            message: "Invalid product info.",
+        });
 
-        take: pagelen,
-        skip: pagelen * page,
-    };
-
-    if (search !== "") {
-        const searchFilter = String(search).replace(/[^\w\s]/gi, "") + "*";
-
-        options.where.title = { search: searchFilter };
-        count.where.title = { search: searchFilter };
+        return false;
     }
 
-    // Query
+    return true;
+}
+
+export const addProduct = async (req: FastifyRequest, res: FastifyReply) => {
+    const body = req.body as productInfo;
+    if (!validateProductInfo(res, req.body)) return;
+
     try {
-        const len = await client.products.aggregate(count as unknown);
-        const data = await client.products.findMany(options as unknown);
+        const data = await client.products.create({
+            data: {
+                title: body.title,
+                subtitle: body.subtitle,
+                description: body.description,
+                images: body.images,
+                tags: body.tags,
+                price: body.price,
+                stock: body.stock as Stock,
+            },
+        });
 
-        return {
-            data,
-            count: len._count,
-        };
+        res.code(200).send({
+            statusCode: 200,
+            message: `${data.id} created.`,
+        });
     } catch (e) {
         consola.error(`[products] ${e}`);
 
@@ -78,6 +94,89 @@ export const productsList = async (req: FastifyRequest, res: FastifyReply) => {
     }
 };
 
-export const addProduct = () => {};
-export const updateProduct = () => {};
-export const deleteProduct = () => {};
+export const updateProduct = async (req: FastifyRequest, res: FastifyReply) => {
+    const { id } = req.params as { id: string };
+    const body = req.body as productInfo;
+
+    if (!validateProductInfo(res, req.body)) return;
+
+    // Find product
+    const product = await client.products.findFirst({
+        where: { id },
+    });
+
+    if (!product) {
+        return res.code(404).send({
+            statusCode: 404,
+            message: "Product not found!",
+        });
+    }
+
+    // Update
+    try {
+        const data = await client.products.update({
+            where: { id },
+            data: {
+                title: body.title,
+                subtitle: body.subtitle,
+                description: body.description,
+                images: body.images,
+                tags: body.tags,
+                price: body.price,
+                stock: body.stock as Stock,
+            },
+        });
+
+        res.code(200).send({
+            statusCode: 200,
+            message: `${data.id} updated.`,
+        });
+    } catch (e) {
+        consola.error(`[products] ${e}`);
+
+        res.code(500).send({
+            statusCode: 500,
+            message: "Internal server error.",
+        });
+    }
+};
+
+export const deleteProduct = async (req: FastifyRequest, res: FastifyReply) => {
+    const { id } = req.params as { id: string };
+    const product = await client.products.findFirst({
+        where: { id },
+    });
+
+    // Find product
+    if (!product) {
+        return res.code(404).send({
+            statusCode: 404,
+            message: "Product not found!",
+        });
+    }
+
+    // TODO: Don't modify orders, but warn user
+    try {
+        // Delete ratings
+        await client.ratings.deleteMany({
+            where: { productID: id },
+        });
+
+        // Delete products
+        const data = await client.products.delete({
+            where: { id },
+        });
+
+        res.code(200).send({
+            statusCode: 200,
+            message: `${data.id} removed.`,
+        });
+    } catch (e) {
+        consola.error(`[products] ${e}`);
+
+        res.code(500).send({
+            statusCode: 500,
+            message: "Internal server error.",
+        });
+    }
+};
