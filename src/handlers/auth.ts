@@ -28,6 +28,9 @@ const loginSchema = Joi.object({
     password: Joi.string().min(5).max(20).required(),
 });
 
+export const whoami = async (req: FastifyRequest, res: FastifyReply) =>
+    res.send(req.user);
+
 export const register = async (req: FastifyRequest, res: FastifyReply) => {
     // Empty body?
     if (!req.body) {
@@ -186,6 +189,40 @@ export const login = async (req: FastifyRequest, res: FastifyReply) => {
     });
 };
 
-export const whoami = async (req: FastifyRequest, res: FastifyReply) => {
-    res.send(req.user);
+export const getToken = async (req: FastifyRequest, res: FastifyReply) => {
+    const token = await fetch(`${process.env.AUTH0_AUDIENCE}/oauth/token`, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+        },
+
+        body: JSON.stringify({
+            client_id: process.env.AUTH0_CLIENT,
+            client_secret: process.env.AUTH0_SECRET,
+            audience: `${process.env.AUTH0_AUDIENCE}/api/v2/`,
+            grant_type: "client_credentials",
+        }),
+    })
+        .then((r) => r.json())
+        .catch((err) => consola.error(`[zero] ${err}`));
+
+    if (!token || token?.error) {
+        res.code(500).send({
+            statusCode: 500,
+            message: "Internal server error.",
+        });
+
+        return;
+    }
+
+    if (token?.access_token && token?.expires_in) {
+        res.send({
+            statusCode: 200,
+            message: "Token generated.",
+            data: {
+                token: token?.access_token,
+                expire: token?.expires_in,
+            },
+        });
+    }
 };

@@ -1,6 +1,6 @@
 import type { FastifyReply, FastifyRequest } from "fastify";
 import type { Stock } from "@prisma/client";
-import client from "../database/prisma";
+import client from "../../database/prisma";
 import consola from "consola";
 import Joi from "joi";
 

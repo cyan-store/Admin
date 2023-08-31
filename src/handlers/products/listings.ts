@@ -1,5 +1,5 @@
 import type { FastifyReply, FastifyRequest } from "fastify";
-import client from "../database/prisma";
+import client from "../../database/prisma";
 import consola from "consola";
 
 interface FilterOptions {
