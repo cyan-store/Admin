@@ -189,7 +189,7 @@ export const login = async (req: FastifyRequest, res: FastifyReply) => {
     });
 };
 
-export const getToken = async (req: FastifyRequest, res: FastifyReply) => {
+export const getToken = async (_: FastifyRequest, res: FastifyReply) => {
     const token = await fetch(`${process.env.AUTH0_AUDIENCE}/oauth/token`, {
         method: "POST",
         headers: {
@@ -204,7 +204,7 @@ export const getToken = async (req: FastifyRequest, res: FastifyReply) => {
         }),
     })
         .then((r) => r.json())
-        .catch((err) => consola.error(`[zero] ${err}`));
+        .catch((err) => consola.error(`[auth] ${err}`));
 
     if (!token || token?.error) {
         res.code(500).send({
