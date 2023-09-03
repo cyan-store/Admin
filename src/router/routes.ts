@@ -1,27 +1,22 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import auth from "../middleware/auth";
 import router from "./router";
 
 import { register, login, whoami, getToken } from "../handlers/auth";
-
 import { productsList, productsInfo } from "../handlers/products/listings";
-import {
-    addProduct,
-    updateProduct,
-    deleteProduct,
-} from "../handlers/products/manage";
+import { addProduct, updateProduct, deleteProduct } from "../handlers/products/manage";
 
 import { usersList, userInfo } from "../handlers/users/profiles";
 import { deleteOrder, updateOrder, userOrderInfo, userOrdersList } from "../handlers/users/orders";
+import { deleteRating, userRatingInfo, userRatings } from "../handlers/users/ratings";
 
 // Public routes
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
 router.register(async (r: any) => {
     r.post("/auth/register", register);
     r.post("/auth/login", login);
 });
 
 // Private routes
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
 router.register(async (r: any) => {
     r.decorate("auth", auth);
 
@@ -43,7 +38,10 @@ router.register(async (r: any) => {
 
     r.get("/users/:id/orders", { onRequest: [r.auth] }, userOrdersList);
     r.get("/users/:id/orders/:orderID", { onRequest: [r.auth] }, userOrderInfo);
-
     r.post("/users/:id/orders/:orderID", { onRequest: [r.auth] }, updateOrder);
     r.delete("/users/:id/orders/:orderID", { onRequest: [r.auth] }, deleteOrder);
+
+    r.get("/users/:id/ratings", { onRequest: [r.auth] }, userRatings);
+    r.get("/users/:id/ratings/:ratingID", { onRequest: [r.auth] }, userRatingInfo);
+    r.delete("/users/:id/ratings/:ratingID", { onRequest: [r.auth] }, deleteRating);
 });

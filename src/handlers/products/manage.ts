@@ -47,11 +47,7 @@ function validateProductInfo(res: FastifyReply, body: productInfo) {
         return false;
     }
 
-    if (
-        !["IN_STOCK", "OUT_STOCK", "DISCONTINUED", "HIDDEN"].includes(
-            body.stock,
-        )
-    ) {
+    if (!["IN_STOCK", "OUT_STOCK", "DISCONTINUED", "HIDDEN"].includes(body.stock)) {
         res.code(400).send({
             statusCode: 400,
             message: "Invalid product info.",

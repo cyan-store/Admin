@@ -28,7 +28,7 @@ export const productsList = async (req: FastifyRequest, res: FastifyReply) => {
     const sort = query?.sort || "asc";
 
     // Validate request
-    if (page < 0 || page > 50000) {
+    if (page < 0 || page > 5000) {
         return res.code(400).send({
             statusCode: 400,
             message: "Invalid page.",

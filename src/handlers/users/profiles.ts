@@ -35,16 +35,13 @@ export const usersList = async (req: FastifyRequest, res: FastifyReply) => {
     });
 
     try {
-        const users = await fetch(
-            `${process.env.AUTH0_AUDIENCE}/api/v2/users?${options.toString()}`,
-            {
-                method: "GET",
-                headers: {
-                    "Content-Type": "application/json",
-                    authorization: `Bearer ${query.token}`,
-                },
+        const users = await fetch(`${process.env.AUTH0_AUDIENCE}/api/v2/users?${options.toString()}`, {
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json",
+                authorization: `Bearer ${query.token}`,
             },
-        );
+        });
 
         // Check token
         const usr = await users.json();
@@ -94,18 +91,13 @@ export const userInfo = async (req: FastifyRequest, res: FastifyReply) => {
 
     // Search
     try {
-        const users = await fetch(
-            `${process.env.AUTH0_AUDIENCE}/api/v2/users/${encodeURIComponent(
-                id,
-            )}`,
-            {
-                method: "GET",
-                headers: {
-                    "Content-Type": "application/json",
-                    authorization: `Bearer ${query.token}`,
-                },
+        const users = await fetch(`${process.env.AUTH0_AUDIENCE}/api/v2/users/${encodeURIComponent(id)}`, {
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json",
+                authorization: `Bearer ${query.token}`,
             },
-        );
+        });
 
         const json = await users.json();
 

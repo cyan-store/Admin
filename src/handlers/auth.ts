@@ -28,8 +28,7 @@ const loginSchema = Joi.object({
     password: Joi.string().min(5).max(20).required(),
 });
 
-export const whoami = async (req: FastifyRequest, res: FastifyReply) =>
-    res.send(req.user);
+export const whoami = async (req: FastifyRequest, res: FastifyReply) => res.send(req.user);
 
 export const register = async (req: FastifyRequest, res: FastifyReply) => {
     // Empty body?

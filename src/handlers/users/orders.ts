@@ -5,12 +5,7 @@ import Joi from "joi";
 
 // Types
 type orderStatus = "UNPAID" | "PAID" | "FAILED" | "CANCELED" | "REFUNDED";
-type orderShipping =
-    | "PENDING"
-    | "SHIPPED"
-    | "DELIVERED"
-    | "CANCELED"
-    | "UNKNOWN";
+type orderShipping = "PENDING" | "SHIPPED" | "DELIVERED" | "CANCELED" | "UNKNOWN";
 
 interface orderBody {
     productID: string;
@@ -47,10 +42,7 @@ const orderSchema = Joi.object({
 });
 
 // Handlers
-export const userOrdersList = async (
-    req: FastifyRequest,
-    res: FastifyReply,
-) => {
+export const userOrdersList = async (req: FastifyRequest, res: FastifyReply) => {
     const { id } = req.params as { id: string };
     const query = req.query as { page?: string; sort?: string };
     const pagelen = 10;
@@ -241,11 +233,7 @@ export const updateOrder = async (req: FastifyRequest, res: FastifyReply) => {
         return;
     }
 
-    if (
-        !["PENDING", "SHIPPED", "DELIVERED", "CANCELED", "UNKNOWN"].includes(
-            body?.shipping,
-        )
-    ) {
+    if (!["PENDING", "SHIPPED", "DELIVERED", "CANCELED", "UNKNOWN"].includes(body?.shipping)) {
         res.code(400).send({
             statusCode: 400,
             message: "Invalid order info.",
@@ -254,11 +242,7 @@ export const updateOrder = async (req: FastifyRequest, res: FastifyReply) => {
         return;
     }
 
-    if (
-        !["UNPAID", "PAID", "FAILED", "CANCELED", "REFUNDED"].includes(
-            body?.status,
-        )
-    ) {
+    if (!["UNPAID", "PAID", "FAILED", "CANCELED", "REFUNDED"].includes(body?.status)) {
         res.code(400).send({
             statusCode: 400,
             message: "Invalid order info.",
