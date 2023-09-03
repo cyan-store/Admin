@@ -61,5 +61,80 @@ export const userRatings = async (req: FastifyRequest, res: FastifyReply) => {
     }
 };
 
-export const userRatingInfo = (req: FastifyRequest, res: FastifyReply) => {};
-export const deleteRating = (req: FastifyRequest, res: FastifyReply) => {};
+export const userRatingInfo = async (req: FastifyRequest, res: FastifyReply) => {
+    const { id, ratingID } = req.params as { id: string; ratingID: string };
+
+    try {
+        const data = await client.ratings.findFirst({
+            where: {
+                user: id,
+                id: ratingID,
+            },
+        });
+
+        if (!data) {
+            res.code(404).send({
+                statusCode: 404,
+                message: "Rating not found.",
+            });
+
+            return;
+        }
+
+        res.send({
+            statusCode: 200,
+            message: `Fetched ${data.rating}* rating.`,
+            data,
+        });
+    } catch (err) {
+        consola.error(`[users] ${err}`);
+
+        res.code(500).send({
+            statusCode: 500,
+            message: "Internal server error.",
+        });
+    }
+};
+
+export const deleteRating = async (req: FastifyRequest, res: FastifyReply) => {
+    const { id, ratingID } = req.params as { id: string; ratingID: string };
+
+    try {
+        // Rating exists?
+        const data = await client.ratings.findFirst({
+            where: {
+                user: id,
+                id: ratingID,
+            },
+        });
+
+        if (!data) {
+            res.code(404).send({
+                statusCode: 404,
+                message: "Rating not found.",
+            });
+
+            return;
+        }
+
+        // Remove rating
+        await client.ratings.delete({
+            where: {
+                user: id,
+                id: ratingID,
+            },
+        });
+
+        res.send({
+            statusCode: 200,
+            message: `Removed ${data.id}.`,
+        });
+    } catch (err) {
+        consola.error(`[users] ${err}`);
+
+        res.code(500).send({
+            statusCode: 500,
+            message: "Internal server error.",
+        });
+    }
+};
