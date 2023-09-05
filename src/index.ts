@@ -1,6 +1,5 @@
 import "dotenv/config";
 import "./router/routes";
-import "dotenv/config";
 
 import router from "./router/router";
 import consola from "consola";

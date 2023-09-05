@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import auth from "../middleware/auth";
+import allow from "../middleware/allow";
 import router from "./router";
 
 import { register, login, whoami, getToken } from "../handlers/auth";
@@ -12,8 +13,11 @@ import { deleteRating, userRatingInfo, userRatings } from "../handlers/users/rat
 
 // Public routes
 router.register(async (r: any) => {
-    r.post("/auth/register", register);
-    r.post("/auth/login", login);
+    r.decorate("allowLogin", allow.login);
+    r.decorate("allowRegister", allow.register);
+
+    r.post("/auth/register", { onRequest: [r.allowRegister] }, register);
+    r.post("/auth/login", { onRequest: [r.allowLogin] }, login);
 });
 
 // Private routes
