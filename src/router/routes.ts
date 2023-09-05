@@ -11,6 +11,8 @@ import { usersList, userInfo } from "../handlers/users/profiles";
 import { deleteOrder, updateOrder, userOrderInfo, userOrdersList } from "../handlers/users/orders";
 import { deleteRating, userRatingInfo, userRatings } from "../handlers/users/ratings";
 
+import { systemSettings, updateSettings } from "../handlers/system/setttings";
+
 // Public routes
 router.register(async (r: any) => {
     r.decorate("allowLogin", allow.login);
@@ -48,4 +50,8 @@ router.register(async (r: any) => {
     r.get("/users/:id/ratings", { onRequest: [r.auth] }, userRatings);
     r.get("/users/:id/ratings/:ratingID", { onRequest: [r.auth] }, userRatingInfo);
     r.delete("/users/:id/ratings/:ratingID", { onRequest: [r.auth] }, deleteRating);
+
+    // System
+    r.get("/system", { onRequest: [r.auth] }, systemSettings);
+    r.post("/system", { onRequest: [r.auth] }, updateSettings);
 });
