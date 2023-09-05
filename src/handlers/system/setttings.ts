@@ -1,4 +1,4 @@
-import { FastifyReply, FastifyRequest } from "fastify";
+import type { FastifyReply, FastifyRequest } from "fastify";
 import client from "../../database/prisma";
 import consola from "consola";
 import Joi from "joi";

@@ -1,4 +1,4 @@
-import { FastifyReply, FastifyRequest } from "fastify";
+import type { FastifyReply, FastifyRequest } from "fastify";
 import consola from "consola";
 
 export const usersList = async (req: FastifyRequest, res: FastifyReply) => {
