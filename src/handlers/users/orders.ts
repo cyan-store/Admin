@@ -299,7 +299,7 @@ export const updateOrder = async (req: FastifyRequest, res: FastifyReply) => {
             message: `${data.id} updated.`,
         });
     } catch (e) {
-        consola.error(`[products] ${e}`);
+        consola.error(`[users] ${e}`);
 
         res.code(500).send({
             statusCode: 500,

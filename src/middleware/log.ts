@@ -25,6 +25,7 @@ export default async (req: FastifyRequest) => {
         date: moment().unix(),
     };
 
+    // Expire in 30 days
     try {
         const title = `shop:log:${data.id}:${data.date}`;
         consola.info(`${data.user} | ${data.method} ${data.path}`);

@@ -16,6 +16,8 @@ import { deleteRating, userRatingInfo, userRatings } from "../handlers/users/rat
 import { systemSettings, updateSettings } from "../handlers/system/setttings";
 import { getLogs } from "../handlers/system/logs";
 
+import { getRecentOrders, getRecentRatings } from "../handlers/recent/recent";
+
 // Public routes
 router.register(async (r: any) => {
     r.decorate("allowLogin", allow.login);
@@ -59,4 +61,9 @@ router.register(async (r: any) => {
     r.get("/system", { onRequest: [r.auth] }, systemSettings);
     r.post("/system", { onRequest: [r.auth, r.log] }, updateSettings);
     r.get("/system/log", { onRequest: [r.auth] }, getLogs);
+
+    // Recent
+    // r.get("/recent", { onRequest: [r.auth] }, stats) // TODO: Stats
+    r.get("/recent/orders", { onRequest: [r.auth] }, getRecentOrders)
+    r.get("/recent/ratings", { onRequest: [r.auth] }, getRecentRatings)
 });
