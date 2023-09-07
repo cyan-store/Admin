@@ -64,6 +64,6 @@ router.register(async (r: any) => {
 
     // Recent
     // r.get("/recent", { onRequest: [r.auth] }, stats) // TODO: Stats
-    r.get("/recent/orders", { onRequest: [r.auth] }, getRecentOrders)
-    r.get("/recent/ratings", { onRequest: [r.auth] }, getRecentRatings)
+    r.get("/recent/orders", { onRequest: [r.auth] }, getRecentOrders);
+    r.get("/recent/ratings", { onRequest: [r.auth] }, getRecentRatings);
 });

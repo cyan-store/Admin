@@ -20,15 +20,15 @@ const registerSchema = Joi.object({
 });
 
 const loginSchema = Joi.object({
-    email: Joi.string().email({
-        minDomainSegments: 2,
-        tlds: { allow: ["com", "net", "ca"] },
-    }),
+    email: Joi.string()
+        .email({
+            minDomainSegments: 2,
+            tlds: { allow: ["com", "net", "ca"] },
+        })
+        .required(),
 
     password: Joi.string().min(5).max(20).required(),
 });
-
-export const whoami = async (req: FastifyRequest, res: FastifyReply) => res.send(req.user);
 
 export const register = async (req: FastifyRequest, res: FastifyReply) => {
     // Empty body?
@@ -185,6 +185,14 @@ export const login = async (req: FastifyRequest, res: FastifyReply) => {
             data: { token },
             message: `Welcome "${user.name}".`,
         });
+    });
+};
+
+export const whoami = async (req: FastifyRequest, res: FastifyReply) => {
+    res.send({
+        statusCode: 200,
+        message: "Found user.",
+        data: req.user,
     });
 };
 
