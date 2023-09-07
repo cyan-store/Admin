@@ -102,9 +102,3 @@ const valid = computed(() => {
 watch(email, () => (errmsg.value = ""));
 watch(password, () => (errmsg.value = ""));
 </script>
-
-<style scoped>
-.invalid {
-    border: 1px solid red;
-}
-</style>
