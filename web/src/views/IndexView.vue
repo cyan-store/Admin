@@ -1,4 +1,5 @@
 <template>
+    <!-- Empty redirect to login -->
     <div></div>
 </template>
 

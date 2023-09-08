@@ -37,11 +37,12 @@ export const useAuthStore = defineStore("auth", () => {
         location.href = "/login";
     };
 
-    const setData = (id: string, name: string, email: string, expire: number) => {
+    const setData = (id: string, name: string, email: string, expire: number, tk: string) => {
         userData.id = id;
         userData.name = name;
         userData.email = email;
         userData.expire = expire;
+        token.value = tk;
 
         timer = setInterval(() => {
             if (Math.floor(Date.now() / 1000) > expire) {

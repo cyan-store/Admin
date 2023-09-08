@@ -25,9 +25,7 @@ export async function isAuthed() {
     const user = await useRequest<User>("/auth", "POST", {}, storage || "");
 
     if (!user.error && user.data.status === 200 && user.json.data.id) {
-        // TODO: Set in storage
-        auth.setData(user.json.data.id, user.json.data.name, user.json.data.email, user.json.data.exp);
-
+        auth.setData(user.json.data.id, user.json.data.name, user.json.data.email, user.json.data.exp, storage);
         return true;
     }
 

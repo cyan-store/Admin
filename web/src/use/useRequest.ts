@@ -1,6 +1,6 @@
 import type { Ref } from "vue";
 
-export async function useRequest<Type>(url: string, method: string, body: object, token: string, loading?: Ref<Boolean>) {
+export async function useRequest<Type>(url: string, method: string, body: object | null, token: string, loading?: Ref<Boolean>) {
     const headers: {
         Authorization?: string;
         "Content-Type"?: string;
