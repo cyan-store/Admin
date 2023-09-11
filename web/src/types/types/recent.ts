@@ -1,4 +1,4 @@
-import type { Response } from ".";
+import type { Response } from "..";
 
 // Orders
 export interface RecentOrdersData {

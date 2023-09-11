@@ -19,6 +19,7 @@
 </template>
 
 <script lang="ts" setup>
+import type { Login } from "@/types/types/auth";
 import { computed, ref, watch } from "vue";
 import { useRouter } from "vue-router";
 import { useAuthStore } from "@/stores/auth";
@@ -33,15 +34,6 @@ const email = ref("");
 const password = ref("");
 const errmsg = ref("");
 const loading = ref(false);
-
-interface Login {
-    statusCode: number;
-    data: {
-        token: string;
-    };
-
-    message: string;
-}
 
 const login = async () => {
     const user = await useRequest<Login>(

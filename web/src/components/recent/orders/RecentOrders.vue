@@ -19,7 +19,7 @@
 </template>
 
 <script lang="ts" setup>
-import type { RecentOrdersData } from "@/types/recent";
+import type { RecentOrdersData } from "@/types/types/recent";
 import { computed } from "vue";
 import { useRouter } from "vue-router";
 
@@ -39,6 +39,6 @@ const products = computed(() => {
 });
 
 const details = () => {
-    router.push(`/users/${props.data.userID}/orders/${props.data.id}`);
+    router.push(`/@/users/${props.data.userID}/orders/${props.data.id}`);
 };
 </script>

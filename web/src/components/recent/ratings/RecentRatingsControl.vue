@@ -11,9 +11,12 @@
                 <option value="5">5 Star</option>
             </select>
 
-            <h4>Leave blank for any.</h4>
-            <input type="text" v-model="control.userID" placeholder="User ID" />
-            <input type="text" v-model="control.productID" placeholder="Product ID" />
+            <div>
+                <h4>Leave blank for any.</h4>
+
+                <DelayedInputItem v-model="control.userID" placehold="User ID" />
+                <DelayedInputItem v-model="control.productID" placehold="Product ID" />
+            </div>
         </div>
 
         <div>
@@ -23,14 +26,14 @@
                 <table v-else>
                     <thead>
                         <tr>
-                            <td>Product ID</td>
-                            <td>User ID</td>
-                            <td>Name</td>
-                            <td>Rating</td>
-                            <td>Review</td>
-                            <td>Created At</td>
-                            <td>Updated At</td>
-                            <td>Details</td>
+                            <th>Product ID</th>
+                            <th>User ID</th>
+                            <th>Name</th>
+                            <th>Rating</th>
+                            <th>Review</th>
+                            <th>Created At</th>
+                            <th>Updated At</th>
+                            <th>Details</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -45,12 +48,13 @@
 </template>
 
 <script lang="ts" setup>
-import type { RecentRatingsData, RecentRatings } from "@/types/recent";
+import type { RecentRatingsData, RecentRatings } from "@/types/types/recent";
 import { onMounted, reactive, ref, watch } from "vue";
 import { useAuthStore } from "@/stores/auth";
 import { useRequest } from "@/use/useRequest";
 
 import PaginateItem from "@/components/general/PaginateItem.vue";
+import DelayedInputItem from "@/components/general/DelayedInputItem.vue";
 import RecentRatingsItem from "./RecentRatings.vue";
 
 const control = reactive({
@@ -69,8 +73,8 @@ const fetchRatings = async () => {
     const query = new URLSearchParams({
         page: control.page.toString(),
         rating: control.rating.toString(),
-        userID: control.userID,
-        productID: control.productID,
+        user_id: control.userID,
+        product_id: control.productID,
     });
 
     const ratings = await useRequest<RecentRatings>(`/recent/ratings?${query.toString()}`, "GET", null, auth.token, loading);

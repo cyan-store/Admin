@@ -28,17 +28,17 @@
                 <table v-else>
                     <thead>
                         <tr>
-                            <td>User ID</td>
-                            <td>Transaction</td>
-                            <td>Products</td>
-                            <td>Quantity</td>
-                            <td>Amount</td>
-                            <td>Email</td>
-                            <td>Payment Status</td>
-                            <td>Shipping Status</td>
-                            <td>Created At</td>
-                            <td>Updated At</td>
-                            <td>Details</td>
+                            <th>User ID</th>
+                            <th>Transaction</th>
+                            <th>Products</th>
+                            <th>Quantity</th>
+                            <th>Amount</th>
+                            <th>Email</th>
+                            <th>Payment Status</th>
+                            <th>Shipping Status</th>
+                            <th>Created At</th>
+                            <th>Updated At</th>
+                            <th>Details</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -53,7 +53,7 @@
 </template>
 
 <script lang="ts" setup>
-import type { RecentOrdersData, RecentOrders } from "@/types/recent";
+import type { RecentOrdersData, RecentOrders } from "@/types/types/recent";
 import { onMounted, reactive, ref, watch } from "vue";
 import { useAuthStore } from "@/stores/auth";
 import { useRequest } from "@/use/useRequest";

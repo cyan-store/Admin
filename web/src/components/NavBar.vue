@@ -1,11 +1,16 @@
 <template>
     <nav>
-        <RouterLink to="/@">Home</RouterLink>
-        <RouterLink to="/@/about">About</RouterLink>
         <div v-if="!auth.authorized">
             <RouterLink to="/login">Login</RouterLink>
         </div>
         <div v-else>
+            <RouterLink to="/@">Home</RouterLink>
+            <RouterLink to="/@/about">About</RouterLink>
+
+            
+            <RouterLink to="/@/users">Users</RouterLink>
+
+
             <a @click="logout">Logout</a>
         </div>
     </nav>

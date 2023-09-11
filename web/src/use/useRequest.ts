@@ -20,6 +20,9 @@ export async function useRequest<Type>(url: string, method: string, body: object
     }).catch((err) => (error = err));
 
     if (error) {
+        console.error("[useRequest] fetch error:", error);
+
+        // TODO: Custom confirm & alert.
         alert(
             JSON.stringify({
                 title: "API Error",

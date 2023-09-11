@@ -8,6 +8,7 @@
         <hr />
 
         <div>
+            <!-- TODO: Links to user profile, orders, recent, etc... -->
             <RecentOrdersControl v-if="isRecent" />
             <RecentRatingsControl v-else />
         </div>

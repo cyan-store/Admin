@@ -1,19 +1,6 @@
+import type { User } from "@/types/types/auth";
 import { useAuthStore } from "@/stores/auth";
 import { useRequest } from "./useRequest";
-
-interface User {
-    statusCode: number;
-    message: string;
-    data: {
-        id: string;
-        name: string;
-        email: string;
-        createdAt: string;
-        updatedAt: string;
-        iat: number;
-        exp: number;
-    };
-}
 
 // Check authorization
 // Update stores & localStorage
