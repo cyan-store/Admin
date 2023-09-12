@@ -22,9 +22,7 @@ import type { Auth0UserData } from "@/types/types/users";
 import { useRouter } from "vue-router";
 
 const router = useRouter();
-const props = defineProps<{
-    data: Auth0UserData;
-}>();
+const props = defineProps<{ data: Auth0UserData; }>();
 
 const details = () => {
     router.push(`/@/users/${props.data.user_id}`);
