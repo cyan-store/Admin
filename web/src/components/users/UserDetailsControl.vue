@@ -29,7 +29,7 @@
                         <li>
                             <b>Last Seen: </b>
 
-                            <!-- TODO: proper dates -->
+                            <!-- TODO: Proper dates -->
                             <span>{{ user.last_login }}</span>
                         </li>
 
@@ -66,7 +66,7 @@
                 <div>
                     <b>Created/Updated: </b>
 
-                    <!-- TODO: proper dates -->
+                    <!-- TODO: Proper dates -->
                     <span>{{ user.created_at }} | {{ user.updated_at }}</span>
                 </div>
             </div>
@@ -108,16 +108,16 @@ const getUser = async () => {
     user.value = {};
 
     const tokens = new URLSearchParams({ token: auth0.token }).toString();
-    const userListing = await useRequest<Auth0User>(`/users/${props.id}?${tokens}`, "GET", null, auth.token, loading);
+    const userDetails = await useRequest<Auth0User>(`/users/${props.id}?${tokens}`, "GET", null, auth.token, loading);
 
-    if (!userListing.error && userListing.data.status === 200) {
-        user.value = userListing.json.data;
+    if (!userDetails.error && userDetails.data.status === 200) {
+        user.value = userDetails.json.data;
         errmsg.value = "";
 
         return;
     }
 
-    if (userListing.data.status === 404) {
+    if (userDetails.data.status === 404) {
         errmsg.value = "User not found!";
 
         return;

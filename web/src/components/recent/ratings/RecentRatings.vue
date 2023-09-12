@@ -1,7 +1,12 @@
 <template>
     <tr>
-        <td>{{ data.productID }}</td>
-        <td>{{ data.user }}</td>
+        <td>
+            <RouterLink :to="`/@/products/${data.productID}`">{{ data.productID }}</RouterLink>
+        </td>
+
+        <td>
+            <RouterLink :to="`/@/users/${data.user}`">{{ data.user }}</RouterLink>
+        </td>
         <td>{{ data.name }}</td>
         <!-- TODO: Use vue-stars -->
         <td>{{ data.rating }}*</td>

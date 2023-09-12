@@ -1,6 +1,8 @@
 <template>
     <tr>
-        <td>{{ data.userID }}</td>
+        <td>
+            <RouterLink :to="`/@/users/${data.userID}`">{{ data.userID }}</RouterLink>
+        </td>
         <td>{{ data.transactionID }}</td>
         <td>{{ products }}</td>
         <td>{{ data.quantity.split(",").join(", ") }}</td>
