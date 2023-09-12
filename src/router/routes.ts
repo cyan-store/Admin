@@ -34,7 +34,7 @@ router.register(async (r: any) => {
 
     // Auth
     r.post("/auth", { onRequest: [r.auth] }, whoami);
-    r.post("/auth/token", { onRequest: [r.auth, r.log] }, getToken);
+    r.post("/auth/token", { onRequest: [r.auth] }, getToken);
 
     // Products
     r.get("/products", { onRequest: [r.auth] }, productsList);
