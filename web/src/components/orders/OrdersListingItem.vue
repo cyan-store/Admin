@@ -1,6 +1,8 @@
 <template>
     <tr>
-        <td>{{ data.id }}</td>
+        <td>
+            <RouterLink :to="`/@/users/${$route.params.id}/orders/${data.id}`">{{ data.id }}</RouterLink>
+        </td>
 
         <td>
             <ul>

@@ -1,6 +1,9 @@
 <template>
     <tr>
-        <td>{{ data.id }}</td>
+        <td>
+            <RouterLink :to="`/@/users/${$route.params.id}/ratings/${data.id}`">{{ data.id }}</RouterLink>
+        </td>
+
         <td>{{ data.name }}</td>
 
         <td v-if="data.description">{{ data.description }}</td>

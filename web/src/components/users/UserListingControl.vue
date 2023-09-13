@@ -18,6 +18,7 @@
                     </tr>
                 </thead>
                 <tbody>
+                    <p v-if="!users.length && !loading">Nothing found!</p>
                     <UserListingItem v-for="user in users" :key="user.user_id" :data="user" />
                 </tbody>
             </table>

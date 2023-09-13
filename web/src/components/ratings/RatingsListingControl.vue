@@ -17,6 +17,7 @@
                 </tr>
             </thead>
             <tbody>
+                <p v-if="!ratings.length && !loading">Nothing found!</p>
                 <RatingsListingItem v-for="rating in ratings" :key="rating.id" :data="rating" />
             </tbody>
         </table>
