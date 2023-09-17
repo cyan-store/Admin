@@ -2,8 +2,9 @@ import { createRouter, createWebHistory } from "vue-router";
 import { isAuthed } from "@/use/useAuth";
 
 import auth from "@/router/routes/auth";
-import index from "@/router/routes/index";
+import index from "@/router/routes/panel/index";
 
+// TODO: 404 page
 const router = createRouter({
     history: createWebHistory(import.meta.env.BASE_URL),
     routes: [

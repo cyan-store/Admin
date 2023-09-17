@@ -88,6 +88,11 @@
                 <div>
                     <iframe class="rounded-md" width="500" height="500" frameborder="0" :src="mapURL"></iframe>
                 </div>
+
+                <div>
+                    <button @click="openEdit">Edit Order</button>
+                    <button @click="deleteOrder">Delete Order</button>
+                </div>
             </div>
         </div>
         <p v-else>{{ errmsg }}</p>
@@ -100,11 +105,13 @@
 import type { OrderDetails, OrderDetailsData } from "@/types/types/orders";
 import { useAuthStore } from "@/stores/auth";
 import { useRequest } from "@/use/useRequest";
+import { useRouter } from "vue-router";
 import { computed, onMounted, ref } from "vue";
 
 import OrdersDetailProduct from "./OrdersDetailProduct.vue";
 
 const auth = useAuthStore();
+const router = useRouter();
 const props = defineProps<{
     user: string;
     order: string;
@@ -131,6 +138,27 @@ const getOrder = async () => {
     }
 
     errmsg.value = "HTTP Error.";
+};
+
+const openEdit = () => {
+    router.push(`/@/users/${props.user}/orders/${props.order}/edit`);
+};
+
+// TODO: Warn user that this should only be done under very specific circumstances
+const deleteOrder = async () => {
+    if (!confirm("Are you sure you want to remove this order?")) return;
+    const rdata = await useRequest<Response>(`/users/${props.user}/orders/${props.order}`, "DELETE", null, auth.token, loading);
+
+    if (!rdata.error && rdata.data.status === 200) {
+        orderData.value = {};
+        errmsg.value = "";
+
+        router.push(`/@/users/${props.user}/orders`);
+        return;
+    }
+
+    // TODO: Use custom alert, maybe a toast
+    alert("HTTP Error.");
 };
 
 const mapURL = computed(() => {

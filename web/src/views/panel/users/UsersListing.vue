@@ -10,6 +10,4 @@
 <script lang="ts" setup>
 import Auth0TokenManager from "@/components/general/Auth0TokenManager.vue";
 import UserListingControl from "@/components/users/UserListingControl.vue";
-
-
 </script>

@@ -1,9 +1,7 @@
 <template>
     <div>
         <button @click="updatePage(-1)" :disabled="disabled || page <= 0">&lt;</button>
-
         <span>{{ page + 1 }}</span>
-
         <button @click="updatePage(1)" :disabled="disabled">&gt;</button>
     </div>
 </template>

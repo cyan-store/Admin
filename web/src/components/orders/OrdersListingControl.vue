@@ -16,6 +16,7 @@
                     <th>Shipping Status</th>
                     <th>Created</th>
                     <th>Updated</th>
+                    <th>Details</th>
                 </tr>
             </thead>
             <tbody>

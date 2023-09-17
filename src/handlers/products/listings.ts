@@ -65,8 +65,12 @@ export const productsList = async (req: FastifyRequest, res: FastifyReply) => {
         const data = await client.products.findMany(options as unknown);
 
         return {
-            data,
-            count: len._count,
+            statusCode: 200,
+            message: `Fetched ${len._count} products.`,
+            data: {
+                products: data,
+                count: len._count,
+            },
         };
     } catch (e) {
         consola.error(`[listings] ${e}`);

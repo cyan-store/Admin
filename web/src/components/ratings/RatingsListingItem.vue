@@ -18,11 +18,19 @@
         <!-- TODO: Proper dates -->
         <td>{{ data.createdAt }}</td>
         <td>{{ data.updatedAt }}</td>
+        <td>
+            <button @click="details">Details</button>
+        </td>
     </tr>
 </template>
 
 <script lang="ts" setup>
 import type { UserRatingData } from "@/types/types/ratings";
+import { useRoute, useRouter } from "vue-router";
 
-defineProps<{ data: UserRatingData }>();
+const props = defineProps<{ data: UserRatingData }>();
+const router = useRouter();
+const route = useRoute();
+
+const details = () => router.push(`/@/users/${route.params.id}/ratings/${props.data.id}`)
 </script>

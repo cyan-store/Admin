@@ -12,7 +12,7 @@ export default [
     {
         path: "about",
         name: "about",
-        component: () => import("../../views/panel/AboutView.vue"),
+        component: () => import("../../../views/panel/AboutView.vue"),
         meta: { title: "About" },
     },
 

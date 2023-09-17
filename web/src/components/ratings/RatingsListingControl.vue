@@ -14,6 +14,7 @@
                     <th>Product ID</th>
                     <th>Created</th>
                     <th>Updated</th>
+                    <th>Details</th> 
                 </tr>
             </thead>
             <tbody>
