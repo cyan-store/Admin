@@ -30,7 +30,7 @@
                             <img :src="useImage(product.images)" height="100" />
                         </td>
                         <td>{{ product.title }}</td>
-                        <td>{{ (product.price / 100).toFixed(2) }}</td>
+                        <td>${{ (product.price / 100).toFixed(2) }}</td>
                         <td>{{ product.stock }}</td>
 
                         <!-- TODO: Proper dates -->

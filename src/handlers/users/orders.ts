@@ -27,7 +27,7 @@ interface orderBody {
 const orderSchema = Joi.object({
     productID: Joi.string().required().max(500),
     transactionID: Joi.string().required(),
-    status: Joi.string().required(),
+    status: Joi.string().required(), // Validate
     quantity: Joi.string().required().max(150),
     amount: Joi.number().required(),
     email: Joi.string().required().email().required(),
