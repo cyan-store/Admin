@@ -84,27 +84,41 @@ export const productsList = async (req: FastifyRequest, res: FastifyReply) => {
 
 export const productsInfo = async (req: FastifyRequest, res: FastifyReply) => {
     const { id } = req.params as { id: string };
-    const product = await client.products.findFirst({
-        where: { id },
-        select: {
-            title: true,
-            subtitle: true,
-            description: true,
-            images: true,
-            tags: true,
-            price: true,
-            stock: true,
-            createdAt: true,
-            updatedAt: true,
-        },
-    });
 
-    if (!product) {
-        return res.code(404).send({
-            statusCode: 404,
-            message: "Product not found!",
+    try {
+        const product = await client.products.findFirst({
+            where: { id },
+            select: {
+                title: true,
+                subtitle: true,
+                description: true,
+                images: true,
+                tags: true,
+                price: true,
+                stock: true,
+                createdAt: true,
+                updatedAt: true,
+            },
+        });
+
+        if (!product) {
+            return res.code(404).send({
+                statusCode: 404,
+                message: "Product not found!",
+            });
+        }
+
+        return {
+            statusCode: 200,
+            message: "Fetched product.",
+            data: product,
+        };
+    } catch (e) {
+        consola.error(`[listings] ${e}`);
+
+        res.code(500).send({
+            statusCode: 500,
+            message: "Internal server error.",
         });
     }
-
-    return product;
 };

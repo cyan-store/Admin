@@ -96,20 +96,20 @@ export const updateProduct = async (req: FastifyRequest, res: FastifyReply) => {
 
     if (!validateProductInfo(res, req.body)) return;
 
-    // Find product
-    const product = await client.products.findFirst({
-        where: { id },
-    });
-
-    if (!product) {
-        return res.code(404).send({
-            statusCode: 404,
-            message: "Product not found!",
-        });
-    }
-
-    // Update
     try {
+        // Find product
+        const product = await client.products.findFirst({
+            where: { id },
+        });
+
+        if (!product) {
+            return res.code(404).send({
+                statusCode: 404,
+                message: "Product not found!",
+            });
+        }
+
+        // Update
         const data = await client.products.update({
             where: { id },
             data: {
@@ -139,20 +139,21 @@ export const updateProduct = async (req: FastifyRequest, res: FastifyReply) => {
 
 export const deleteProduct = async (req: FastifyRequest, res: FastifyReply) => {
     const { id } = req.params as { id: string };
-    const product = await client.products.findFirst({
-        where: { id },
-    });
 
-    // Find product
-    if (!product) {
-        return res.code(404).send({
-            statusCode: 404,
-            message: "Product not found!",
-        });
-    }
-
-    // TODO: Don't modify orders, but warn user
+    // NOTE: Don't modify orders, but warn user
     try {
+        const product = await client.products.findFirst({
+            where: { id },
+        });
+
+        // Find product
+        if (!product) {
+            return res.code(404).send({
+                statusCode: 404,
+                message: "Product not found!",
+            });
+        }
+
         // Delete ratings
         await client.ratings.deleteMany({
             where: { productID: id },

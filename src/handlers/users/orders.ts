@@ -311,25 +311,24 @@ export const updateOrder = async (req: FastifyRequest, res: FastifyReply) => {
 export const deleteOrder = async (req: FastifyRequest, res: FastifyReply) => {
     const { id, orderID } = req.params as { id: string; orderID: string };
 
-    const order = await client.orders.findFirst({
-        where: {
-            id: orderID,
-            userID: id,
-        },
-    });
-
-    if (!order) {
-        res.code(404).send({
-            statusCode: 404,
-            message: "Order not found!",
+    try {
+        const order = await client.orders.findFirst({
+            where: {
+                id: orderID,
+                userID: id,
+            },
         });
 
-        return;
-    }
+        if (!order) {
+            res.code(404).send({
+                statusCode: 404,
+                message: "Order not found!",
+            });
 
-    // TODO: Warn user that this should only be done under very specific circumstances
-    try {
-        // Delete order
+            return;
+        }
+
+        // NOTE: Warn user that this should only be done under very specific circumstances
         const data = await client.orders.delete({
             where: {
                 id: orderID,

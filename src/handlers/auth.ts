@@ -1,4 +1,5 @@
 import type { FastifyReply, FastifyRequest } from "fastify";
+import { Admin } from "@prisma/client";
 
 import client from "../database/prisma";
 import router from "../router/router";
@@ -56,14 +57,25 @@ export const register = async (req: FastifyRequest, res: FastifyReply) => {
     };
 
     // User exists?
-    const exists = await client.admin.findFirst({
-        where: { email: body.email },
-    });
+    let exists;
 
-    if (exists) {
-        return res.code(409).send({
-            statusCode: 409,
-            message: "Email in use.",
+    try {
+        exists = await client.admin.findFirst({
+            where: { email: body.email },
+        });
+
+        if (exists) {
+            return res.code(409).send({
+                statusCode: 409,
+                message: "Email in use.",
+            });
+        }
+    } catch (err) {
+        consola.error(`[auth] ${err}`);
+
+        res.code(500).send({
+            statusCode: 500,
+            message: "Internal server error.",
         });
     }
 
@@ -140,14 +152,25 @@ export const login = async (req: FastifyRequest, res: FastifyReply) => {
     };
 
     // Find user
-    const user = await client.admin.findFirst({
-        where: { email: body.email },
-    });
+    let user: Admin;
 
-    if (!user) {
-        return res.code(401).send({
-            statusCode: 401,
-            message: "Invalid username/password.",
+    try {
+        user = await client.admin.findFirst({
+            where: { email: body.email },
+        });
+
+        if (!user) {
+            return res.code(401).send({
+                statusCode: 401,
+                message: "Invalid username/password.",
+            });
+        }
+    } catch (err) {
+        consola.error(`[auth] ${err}`);
+
+        res.code(500).send({
+            statusCode: 500,
+            message: "Internal server error.",
         });
     }
 
