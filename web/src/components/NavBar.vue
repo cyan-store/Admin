@@ -5,10 +5,8 @@
         </div>
         <div v-else>
             <RouterLink to="/@">Home</RouterLink>
-            <RouterLink to="/@/about">About</RouterLink>
-
-            
             <RouterLink to="/@/users">Users</RouterLink>
+            <RouterLink to="/@/products">Products</RouterLink>
 
 
             <a @click="logout">Logout</a>

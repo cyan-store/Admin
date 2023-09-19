@@ -3,7 +3,7 @@
 
     <DialogItem :open="open" @exit="openProduct">
         <div>
-            <DelayedInputItem v-model="search.query" placehold="Search..." :disabled="loading || !!errmsg" />
+            <DelayedInputItem v-model="search.query" placehold="Search..." />
             <button @click="search.sort = search.sort === 'asc' ? 'desc' : 'asc'" :disabled="loading || !!errmsg">
                 {{ search.sort.toUpperCase() }}
             </button>
@@ -29,7 +29,10 @@
                         <td>
                             <img :src="useImage(product.images)" height="100" />
                         </td>
-                        <td>{{ product.title }}</td>
+                        <td>
+                            <RouterLink :to="`/@/products/${product.id}`">{{ product.title }}</RouterLink>
+                        </td>
+
                         <td>${{ (product.price / 100).toFixed(2) }}</td>
                         <td>{{ product.stock }}</td>
 
@@ -42,7 +45,7 @@
                     </tr>
                 </tbody>
             </table>
-            <p v-else>Nothing found!</p>
+            <p v-else-if="searchData?.products?.length === 0">Nothing found!</p>
         </div>
         <p v-else>{{ errmsg }}</p>
 
@@ -76,7 +79,7 @@ const searchData = ref<Partial<ProductSearchData>>({});
 
 const emits = defineEmits<{
     (e: "pushProduct", p: OrderProducts): void;
-}>()
+}>();
 
 const searchProducts = async () => {
     if (search.query === "") {
@@ -122,5 +125,12 @@ const addProduct = (product: ProductSearchDetail) => {
 const update = (n: number) => (search.page = n);
 const openProduct = () => (open.value = !open.value);
 
-watch(search, searchProducts);
+const searchReset = () => {
+    search.page = 0;
+    searchProducts();
+};
+
+watch(() => search.page, searchProducts);
+watch(() => search.query, searchReset);
+watch(() => search.sort, searchReset);
 </script>

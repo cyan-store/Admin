@@ -1,5 +1,7 @@
 import RecentView from "@/views/panel/RecentView.vue";
+
 import users from "@/router/routes/panel/users";
+import products from "@/router/routes/panel/products";
 
 export default [
     {
@@ -10,16 +12,16 @@ export default [
     },
 
     {
-        path: "about",
-        name: "about",
-        component: () => import("../../../views/panel/AboutView.vue"),
-        meta: { title: "About" },
-    },
-
-    {
         path: "users",
         name: "users",
         children: users,
         meta: { title: "Users" },
+    },
+
+    {
+        path: "products",
+        name: "products",
+        children: products,
+        meta: { title: "Products" },
     },
 ];

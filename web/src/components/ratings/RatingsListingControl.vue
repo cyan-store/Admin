@@ -1,6 +1,6 @@
 <template>
     <div>
-        <button @click="updateSort">{{ sort.toUpperCase() }}</button>
+        <button @click="updateSort" :disabled="loading">{{ sort.toUpperCase() }}</button>
 
         <p v-if="loading">Loading...</p>
         <p v-if="errmsg">{{ errmsg }}</p>
