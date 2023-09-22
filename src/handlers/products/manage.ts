@@ -8,7 +8,6 @@ interface productInfo {
     title?: string;
     subtitle?: string;
     description?: string;
-    images?: string;
     tags?: string;
     price?: number;
     stock?: string;
@@ -18,7 +17,6 @@ const productSchema = Joi.object({
     title: Joi.string().required().min(3).max(20),
     subtitle: Joi.string().required().min(0).max(50),
     description: Joi.string().required().min(10).max(150),
-    images: Joi.string().required().min(0).max(249),
     tags: Joi.string().required().min(0).max(50),
     price: Joi.number().required().min(100).max(100000),
     stock: Joi.string().required().max(20),
@@ -69,7 +67,7 @@ export const addProduct = async (req: FastifyRequest, res: FastifyReply) => {
                 title: body.title,
                 subtitle: body.subtitle,
                 description: body.description,
-                images: body.images,
+                images: "",
                 tags: body.tags,
                 price: body.price,
                 stock: body.stock as Stock,
@@ -78,7 +76,7 @@ export const addProduct = async (req: FastifyRequest, res: FastifyReply) => {
 
         res.code(200).send({
             statusCode: 200,
-            message: `${data.id} created.`,
+            message: data.id,
         });
     } catch (e) {
         consola.error(`[products] ${e}`);
@@ -116,7 +114,6 @@ export const updateProduct = async (req: FastifyRequest, res: FastifyReply) => {
                 title: body.title,
                 subtitle: body.subtitle,
                 description: body.description,
-                images: body.images,
                 tags: body.tags,
                 price: body.price,
                 stock: body.stock as Stock,
@@ -125,7 +122,7 @@ export const updateProduct = async (req: FastifyRequest, res: FastifyReply) => {
 
         res.code(200).send({
             statusCode: 200,
-            message: `${data.id} updated.`,
+            message: data.id,
         });
     } catch (e) {
         consola.error(`[products] ${e}`);

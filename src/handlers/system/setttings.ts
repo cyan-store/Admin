@@ -72,7 +72,7 @@ export const updateSettings = async (req: FastifyRequest, res: FastifyReply) => 
     }
 
     try {
-        const data = await client.system.update({
+        await client.system.update({
             where: {
                 id: "SERVER_SETTINGS",
             },
@@ -89,7 +89,6 @@ export const updateSettings = async (req: FastifyRequest, res: FastifyReply) => 
         res.send({
             statusCode: 200,
             message: "Updated system settings.",
-            data,
         });
     } catch (err) {
         consola.error(`[system] ${err}`);

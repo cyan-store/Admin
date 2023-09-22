@@ -3,6 +3,7 @@
         <div>
             <DelayedInputItem v-model="filter.search" placehold="Search product..." />
             <button @click="updateSort" :disabled="loading">{{ filter.sort.toUpperCase() }}</button>
+            <button @click="newProduct">New Product</button>
 
             <p>Found: {{ productData?.count || 0 }}</p>
         </div>
@@ -38,6 +39,7 @@
 import type { ProductSearch, ProductSearchData } from "@/types/types/products";
 import { useAuthStore } from "@/stores/auth";
 import { useRequest } from "@/use/useRequest";
+import { useRouter } from "vue-router";
 import { onMounted, reactive, ref, watch } from "vue";
 
 import DelayedInputItem from "@/components/general/DelayedInputItem.vue";
@@ -45,6 +47,7 @@ import PaginateItem from "@/components/general/PaginateItem.vue";
 import ProductListingItem from "./ProductListingItem.vue";
 
 const auth = useAuthStore();
+const router = useRouter();
 
 const filter = reactive({
     search: "",
@@ -84,6 +87,10 @@ const searchProduct = async () => {
 const searchReset = () => {
     filter.page = 0;
     searchProduct();
+};
+
+const newProduct = () => {
+    router.push("/@/products/new");
 };
 
 watch(() => filter.page, searchProduct);
