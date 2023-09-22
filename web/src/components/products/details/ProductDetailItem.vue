@@ -15,8 +15,8 @@
                 <p>{{ productData.description }}</p>
             </div>
 
-            <div v-if="images.length">
-                <img v-for="img in images" :key="img" :src="img" height="100" />
+            <div>
+                <ProductDetailAssets :images="imageData" @setImages="setImages" />
             </div>
 
             <div>
@@ -55,17 +55,19 @@
 
 <script lang="ts" setup>
 import type { ProductDetail, ProductDetailData } from "@/types/types/products";
-import { useRequest } from "@/use/useRequest";
 import { useAuthStore } from "@/stores/auth";
+import { useRequest } from "@/use/useRequest";
 import { useRouter } from "vue-router";
 import { computed, onMounted, ref } from "vue";
-import { useAsset } from "@/use/useImage";
+
+import ProductDetailAssets from "./ProductDetailAssets.vue";
 
 const auth = useAuthStore();
 const router = useRouter();
 const props = defineProps<{ id: string }>();
 
 const productData = ref<Partial<ProductDetailData>>({});
+const imageData = ref<string[]>([]);
 const loading = ref(false);
 const errmsg = ref("");
 
@@ -73,6 +75,7 @@ const getProduct = async () => {
     const pdata = await useRequest<ProductDetail>(`/products/${props.id}`, "GET", null, auth.token, loading);
 
     if (!pdata.error && pdata.data.status === 200) {
+        imageData.value = pdata.json.data.images.split(",").filter((n) => n.length !== 0);
         productData.value = pdata.json.data;
         errmsg.value = "";
 
@@ -110,12 +113,8 @@ const tags = computed(() => {
     return productData.value.tags.split(",").filter((n) => n.length !== 0);
 });
 
-const images = computed(() => {
-    if (!productData.value.images) return [];
-
-    return productData.value.images.split(",").map((img) => useAsset(img));
-});
-
 const editProduct = () => router.push(`/@/products/${props.id}/edit`);
+const setImages = (newImages: string[]) => (imageData.value = newImages);
+
 onMounted(getProduct);
 </script>

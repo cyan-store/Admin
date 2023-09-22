@@ -162,16 +162,17 @@ export const deleteAsset = async (req: FastifyRequest, res: FastifyReply) => {
 
         // Remove from database
         const imageData = images.filter((n) => n !== filename);
-        const imageJoined = imageData.filter((v, i, a) => a.indexOf(v) == i).join(",");
+        const imageJoined = imageData.filter((v, i, a) => a.indexOf(v) == i);
 
         await client.products.update({
             where: { id },
-            data: { images: imageJoined },
+            data: { images: imageJoined.join(",") },
         });
 
         res.send({
             statusCode: 200,
-            message: `${filename} removed from ${product.title}.`
+            message: `${filename} removed from ${product.title}.`,
+            data: { images: imageJoined },
         });
     } catch (err) {
         consola.error(`[files] ${err}`);

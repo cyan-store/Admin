@@ -36,8 +36,8 @@
 
 <script lang="ts" setup>
 import type { ProductSearch, ProductSearchData } from "@/types/types/products";
-import { useRequest } from "@/use/useRequest";
 import { useAuthStore } from "@/stores/auth";
+import { useRequest } from "@/use/useRequest";
 import { onMounted, reactive, ref, watch } from "vue";
 
 import DelayedInputItem from "@/components/general/DelayedInputItem.vue";
