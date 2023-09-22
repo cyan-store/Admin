@@ -8,6 +8,7 @@ import log from "../middleware/log";
 import { register, login, whoami, getToken } from "../handlers/auth";
 import { productsList, productsInfo } from "../handlers/products/listings";
 import { addProduct, updateProduct, deleteProduct } from "../handlers/products/manage";
+import { uploadAsset, deleteAsset } from "../handlers/products/files";
 
 import { usersList, userInfo } from "../handlers/users/profiles";
 import { deleteOrder, updateOrder, userOrderInfo, userOrdersList } from "../handlers/users/orders";
@@ -43,6 +44,10 @@ router.register(async (r: any) => {
     r.get("/products/:id", { onRequest: [r.auth] }, productsInfo);
     r.post("/products/:id", { onRequest: [r.auth, r.log] }, updateProduct);
     r.delete("/products/:id", { onRequest: [r.auth, r.log] }, deleteProduct);
+
+    r.post("/products/:id/upload", { onRequest: [r.auth, r.log] }, uploadAsset);
+    r.delete("/products/:id/upload", { onRequest: [r.auth, r.log] }, deleteAsset);
+
 
     // Users
     r.get("/users", { onRequest: [r.auth] }, usersList);
