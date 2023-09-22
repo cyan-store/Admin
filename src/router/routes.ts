@@ -48,7 +48,6 @@ router.register(async (r: any) => {
     r.post("/products/:id/upload", { onRequest: [r.auth, r.log] }, uploadAsset);
     r.delete("/products/:id/upload", { onRequest: [r.auth, r.log] }, deleteAsset);
 
-
     // Users
     r.get("/users", { onRequest: [r.auth] }, usersList);
     r.get("/users/:id", { onRequest: [r.auth] }, userInfo);

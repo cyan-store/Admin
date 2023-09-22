@@ -128,7 +128,7 @@ export const deleteAsset = async (req: FastifyRequest, res: FastifyReply) => {
         return;
     }
 
-    const filePath = `${process.env.UPLOAD_PATH}/${filename}`;
+    const filePath = `${process.env.UPLOAD_PATH}/${filename}.jpg`;
 
     try {
         // Product exists?
