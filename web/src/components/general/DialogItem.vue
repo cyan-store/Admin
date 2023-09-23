@@ -10,5 +10,5 @@
 
 <script lang="ts" setup>
 const emits = defineEmits<{ (e: "exit"): void }>();
-const props = defineProps<{ open: boolean }>()
+const props = defineProps<{ open: boolean }>();
 </script>

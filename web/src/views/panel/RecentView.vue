@@ -22,6 +22,5 @@ import RecentOrdersControl from "@/components/recent/orders/RecentOrdersControl.
 import RecentRatingsControl from "@/components/recent/ratings/RecentRatingsControl.vue";
 
 const recent = ref("Orders");
-
 const isRecent = computed(() => recent.value === "Orders");
 </script>

@@ -18,7 +18,7 @@ export const useAuth0Store = defineStore("auth0", () => {
         return false;
     };
 
-    const removeToken = () => token.value = ""
+    const removeToken = () => (token.value = "");
     const hasToken = () => !!token.value;
 
     return { token, getToken, removeToken, hasToken };

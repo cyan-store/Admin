@@ -1,4 +1,5 @@
 import RecentView from "@/views/panel/RecentView.vue";
+import SystemView from "@/views/panel/SystemView.vue";
 
 import users from "@/router/routes/panel/users";
 import products from "@/router/routes/panel/products";
@@ -9,6 +10,13 @@ export default [
         name: "home",
         component: RecentView,
         meta: { title: "Home" },
+    },
+
+    {
+        path: "system",
+        name: "system",
+        component: SystemView,
+        meta: { title: "System Settings" },
     },
 
     {

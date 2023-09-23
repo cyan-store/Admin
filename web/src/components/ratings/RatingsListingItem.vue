@@ -32,5 +32,5 @@ const props = defineProps<{ data: UserRatingData }>();
 const router = useRouter();
 const route = useRoute();
 
-const details = () => router.push(`/@/users/${route.params.id}/ratings/${props.data.id}`)
+const details = () => router.push(`/@/users/${route.params.id}/ratings/${props.data.id}`);
 </script>

@@ -7,7 +7,7 @@
             <RouterLink to="/@">Home</RouterLink>
             <RouterLink to="/@/users">Users</RouterLink>
             <RouterLink to="/@/products">Products</RouterLink>
-
+            <RouterLink to="/@/system">System</RouterLink>
 
             <a @click="logout">Logout</a>
         </div>

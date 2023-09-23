@@ -22,7 +22,7 @@ export const getLogs = async (_: FastifyRequest, res: FastifyReply) => {
         res.send({
             statusCode: 200,
             message: `Fetched ${keys.length} actions.`,
-            data: keys,
+            data: keys.sort((a, b) => b.date - a.date),
         });
     } catch (err) {
         consola.error(`[system] ${err}`);

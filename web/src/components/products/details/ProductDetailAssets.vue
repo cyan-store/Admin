@@ -103,7 +103,7 @@ const upload = async () => {
 
 const remove = async (id: string) => {
     if (!confirm("Are you sure?")) return;
-    
+
     const params = new URLSearchParams({ asset: id });
     const rdata = await useRequest<RemoveResponse>(`/products/${route.params.id}/upload?${params.toString()}`, "DELETE", null, auth.token, loading);
 

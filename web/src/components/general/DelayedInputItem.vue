@@ -1,12 +1,5 @@
 <template>
-    <input
-        type="text"
-        :placeholder="placehold"
-        :disabled="disabled"
-        :class="classes || ''"
-        :value="modelValue"
-        @input="updateInput"
-    />
+    <input type="text" :placeholder="placehold" :disabled="disabled" :class="classes || ''" :value="modelValue" @input="updateInput" />
 </template>
 
 <script lang="ts" setup>

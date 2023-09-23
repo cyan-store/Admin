@@ -39,5 +39,5 @@ const route = useRoute();
 const productList = props.data.productID.split(",");
 const quantityList = props.data.quantity.split(",");
 
-const details = () => router.push(`/@/users/${route.params.id}/orders/${props.data.id}`)
+const details = () => router.push(`/@/users/${route.params.id}/orders/${props.data.id}`);
 </script>
