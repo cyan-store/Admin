@@ -41,3 +41,15 @@ export interface RecentRatingsData {
 export interface RecentRatings extends Response {
     data: RecentRatingsData[];
 }
+
+// Stats
+export interface Stats {
+    data: StatsData;
+}
+
+export interface StatsData {
+    products: number;
+    orders: number;
+    ratings: number;
+    admins: number;
+}

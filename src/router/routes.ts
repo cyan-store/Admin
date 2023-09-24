@@ -18,6 +18,7 @@ import { systemSettings, updateSettings } from "../handlers/system/setttings";
 import { getLogs } from "../handlers/system/logs";
 
 import { getRecentOrders, getRecentRatings } from "../handlers/recent/recent";
+import { getStats } from "../handlers/recent/stats";
 
 // Public routes
 router.register(async (r: any) => {
@@ -67,7 +68,7 @@ router.register(async (r: any) => {
     r.get("/system/log", { onRequest: [r.auth] }, getLogs);
 
     // Recent
-    // r.get("/recent", { onRequest: [r.auth] }, stats) // TODO: Stats
+    r.get("/recent", { onRequest: [r.auth] }, getStats);
     r.get("/recent/orders", { onRequest: [r.auth] }, getRecentOrders);
     r.get("/recent/ratings", { onRequest: [r.auth] }, getRecentRatings);
 });

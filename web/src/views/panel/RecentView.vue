@@ -2,14 +2,18 @@
     <div>
         <h2>Recent {{ recent }}</h2>
 
-        <button @click="recent = 'Orders'" :disabled="isRecent">Orders</button>
-        <button @click="recent = 'Ratings'" :disabled="!isRecent">Ratings</button>
-
-        <hr />
+        <StatsDisplay />
 
         <div>
-            <RecentOrdersControl v-if="isRecent" />
-            <RecentRatingsControl v-else />
+            <button @click="recent = 'Orders'" :disabled="isRecent">Orders</button>
+            <button @click="recent = 'Ratings'" :disabled="!isRecent">Ratings</button>
+
+            <hr />
+
+            <div>
+                <RecentOrdersControl v-if="isRecent" />
+                <RecentRatingsControl v-else />
+            </div>
         </div>
     </div>
 </template>
@@ -17,6 +21,7 @@
 <script lang="ts" setup>
 import { computed, ref } from "vue";
 
+import StatsDisplay from "@/components/recent/StatsDisplay.vue";
 import RecentOrdersControl from "@/components/recent/orders/RecentOrdersControl.vue";
 import RecentRatingsControl from "@/components/recent/ratings/RecentRatingsControl.vue";
 
