@@ -36,9 +36,7 @@
                         <td>${{ (product.price / 100).toFixed(2) }}</td>
                         <td>{{ product.stock }}</td>
 
-                        <!-- TODO: Proper dates -->
-                        <td>{{ product.updatedAt }}</td>
-
+                        <td :title="useDate(product.updatedAt)">{{ useNow(product.updatedAt) }}</td>
                         <td>
                             <button @click="addProduct(product)">Add</button>
                         </td>
@@ -57,6 +55,7 @@
 import type { ProductSearch, ProductSearchData, ProductSearchDetail } from "@/types/types/products";
 import type { OrderProducts } from "@/types/types/orders";
 import { useAuthStore } from "@/stores/auth";
+import { useDate, useNow } from "@/use/useDate";
 import { useRequest } from "@/use/useRequest";
 import { useImage } from "@/use/useImage";
 import { reactive, ref, watch } from "vue";

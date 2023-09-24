@@ -17,9 +17,8 @@
         <td>${{ (data.price / 100).toFixed(2) }}</td>
         <td>{{ data.stock }}</td>
 
-        <!-- TODO: Proper dates -->
-        <td>{{ data.createdAt }}</td>
-        <td>{{ data.updatedAt }}</td>
+        <td :title="useDate(data.createdAt)">{{ useNow(data.createdAt) }}</td>
+        <td :title="useDate(data.updatedAt)">{{ useNow(data.updatedAt) }}</td>
 
         <td>
             <button @click="details">Details</button>
@@ -29,6 +28,7 @@
 
 <script lang="ts" setup>
 import type { ProductSearchDetail } from "@/types/types/products";
+import { useDate, useNow } from "@/use/useDate";
 import { useImage } from "@/use/useImage";
 import { useRouter } from "vue-router";
 import { computed } from "vue";

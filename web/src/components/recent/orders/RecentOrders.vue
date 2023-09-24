@@ -11,9 +11,8 @@
         <td>{{ data.status }}</td>
         <td>{{ data.shipping }}</td>
 
-        <!-- TODO: Proper dates -->
-        <td>{{ data.createdAt }}</td>
-        <td>{{ data.updatedAt }}</td>
+        <td :title="useDate(data.createdAt)">{{ useNow(data.createdAt) }}</td>
+        <td :title="useDate(data.updatedAt)">{{ useNow(data.updatedAt) }}</td>
         <td>
             <button @click="details">Details</button>
         </td>
@@ -22,8 +21,9 @@
 
 <script lang="ts" setup>
 import type { RecentOrdersData } from "@/types/types/recent";
-import { computed } from "vue";
+import { useDate, useNow } from "@/use/useDate";
 import { useRouter } from "vue-router";
+import { computed } from "vue";
 
 const router = useRouter();
 const props = defineProps<{

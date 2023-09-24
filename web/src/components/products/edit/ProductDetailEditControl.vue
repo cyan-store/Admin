@@ -67,12 +67,15 @@ import type { ProductDetail, ProductDetailData } from "@/types/types/products";
 import type { Response } from "@/types";
 import { useAuthStore } from "@/stores/auth";
 import { useRequest } from "@/use/useRequest";
+import { useToast } from "vue-toast-notification";
 import { useRouter } from "vue-router";
 import { computed, onMounted, ref, reactive } from "vue";
 import Joi from "joi";
 
 const auth = useAuthStore();
 const router = useRouter();
+const $toast = useToast();
+
 const props = defineProps<{
     id: string;
 }>();
@@ -141,13 +144,13 @@ const setProduct = async () => {
     if (!pdata.error && pdata.data.status === 200) {
         errmsg.value = "";
 
-        // TODO: Custom order, use toast
-        alert("Updated product.");
+        $toast.success(`Updated ${productDetails.title}.`);
         router.push(`/@/products/${pdata.json.message}`);
 
         return;
     }
 
+    $toast.error("Could not update product: HTTP Error.");
     errmsg.value = "HTTP Error.";
 };
 
@@ -157,12 +160,12 @@ const addTag = () => {
     const tag = String(prompt("Enter tag name:"));
 
     if (["undefined", "null", ""].includes(tag) || tag.length >= 25 || tag.split("").includes(",")) {
-        alert("Invalid tag name.");
+        $toast.error("Invalid tag name.");
         return;
     }
 
     if (productDetails.tags.includes(tag)) {
-        alert("Tag already exists!");
+        $toast.error("Tag already exists!");
         return;
     }
 
@@ -171,7 +174,7 @@ const addTag = () => {
 
 const removeTag = (tag: string) => {
     if (!productDetails.tags.includes(tag)) {
-        alert("Tag does not exists!");
+        $toast.error("Tag does not exists!");
         return;
     }
 

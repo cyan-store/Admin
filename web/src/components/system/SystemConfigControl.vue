@@ -51,10 +51,12 @@
 import type { SystemSettings, SystemSettingsData } from "@/types/types/system";
 import { useAuthStore } from "@/stores/auth";
 import { useRequest } from "@/use/useRequest";
+import { useToast } from "vue-toast-notification";
 import { computed, onMounted, reactive, ref } from "vue";
 import Joi from "joi";
 
 const auth = useAuthStore();
+const $toast = useToast();
 
 const settings = ref<Partial<SystemSettingsData>>({});
 const loading = ref(false);
@@ -103,12 +105,11 @@ const updateSettings = async () => {
         errmsg.value = "";
         getSettings();
 
-        // TODO: Custom alert
-        alert("Updated settings.");
-
+        $toast.success("Updated settings.");
         return;
     }
 
+    $toast.error("Could not update settings: HTTP Error.");
     errmsg.value = "HTTP Error.";
 };
 

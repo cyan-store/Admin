@@ -20,8 +20,7 @@
 
                         <td>{{ log.ip }}</td>
 
-                        <!-- TODO: Proper dates -->
-                        <td>{{ log.from_now }}</td>
+                        <td :title="useUnix(log.date).format('dddd, MMMM Do YYYY, h:mm:ss a')">{{ log.from_now }}</td>
                     </tr>
                 </tbody>
             </table>
@@ -32,6 +31,7 @@
 <script lang="ts" setup>
 import type { SystemLogs, SystemLogsData } from "@/types/types/system";
 import { useAuthStore } from "@/stores/auth";
+import { useUnix } from "@/use/useDate";
 import { useRequest } from "@/use/useRequest";
 import { onMounted, ref } from "vue";
 

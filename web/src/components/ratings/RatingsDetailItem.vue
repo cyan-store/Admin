@@ -46,10 +46,13 @@ import type { UserRating, UserRatingData } from "@/types/types/ratings";
 import type { Response } from "@/types";
 import { useAuthStore } from "@/stores/auth";
 import { useRequest } from "@/use/useRequest";
+import { useToast } from "vue-toast-notification";
 import { useRouter } from "vue-router";
 import { onMounted, ref } from "vue";
 
 const auth = useAuthStore();
+
+const $toast = useToast();
 const router = useRouter();
 const props = defineProps<{
     user: string;
@@ -87,12 +90,12 @@ const deleteRating = async () => {
         ratingData.value = {};
         errmsg.value = "";
 
+        $toast.success(`Removed ${props.rating}.`);
         router.push(`/@/users/${props.user}/ratings`);
         return;
     }
 
-    // TODO: Use custom alert, maybe a toast
-    alert("HTTP Error.");
+    $toast.error("Could not remove rating: HTTP Error.");
 };
 
 const productPage = () => router.push(`/@/products/${ratingData.value.productID}`);

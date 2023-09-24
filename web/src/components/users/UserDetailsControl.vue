@@ -28,9 +28,7 @@
                     <ul>
                         <li>
                             <b>Last Seen: </b>
-
-                            <!-- TODO: Proper dates -->
-                            <span>{{ user.last_login }}</span>
+                            <span :title="useDate(user.last_login)">{{ useNow(user.last_login) }}</span>
                         </li>
 
                         <li>
@@ -65,9 +63,7 @@
 
                 <div>
                     <b>Created/Updated: </b>
-
-                    <!-- TODO: Proper dates -->
-                    <span>{{ user.created_at }} | {{ user.updated_at }}</span>
+                    <span>{{ useDate(user.created_at) }} / {{ useDate(user.updated_at) }}</span>
                 </div>
             </div>
 
@@ -84,6 +80,7 @@
 import type { Auth0User, Auth0UserData } from "@/types/types/users";
 import { useAuthStore } from "@/stores/auth";
 import { useAuth0Store } from "@/stores/auth0";
+import { useDate, useNow } from "@/use/useDate";
 import { useRequest } from "@/use/useRequest";
 import { computed, onMounted, ref, watch } from "vue";
 import { useRouter } from "vue-router";

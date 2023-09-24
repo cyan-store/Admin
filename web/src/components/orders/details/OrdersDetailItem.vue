@@ -105,6 +105,7 @@
 import type { OrderDetails, OrderDetailsData } from "@/types/types/orders";
 import { useAuthStore } from "@/stores/auth";
 import { useRequest } from "@/use/useRequest";
+import { useToast } from "vue-toast-notification";
 import { useRouter } from "vue-router";
 import { computed, onMounted, ref } from "vue";
 
@@ -112,6 +113,7 @@ import OrdersDetailProduct from "./OrdersDetailProduct.vue";
 
 const auth = useAuthStore();
 const router = useRouter();
+const $toast = useToast();
 const props = defineProps<{
     user: string;
     order: string;
@@ -150,6 +152,7 @@ const deleteOrder = async () => {
     const rdata = await useRequest<Response>(`/users/${props.user}/orders/${props.order}`, "DELETE", null, auth.token, loading);
 
     if (!rdata.error && rdata.data.status === 200) {
+        $toast.success(`Removed order from ${orderData.value.order?.email}.`);
         orderData.value = {};
         errmsg.value = "";
 
@@ -157,8 +160,7 @@ const deleteOrder = async () => {
         return;
     }
 
-    // TODO: Use custom alert, maybe a toast
-    alert("HTTP Error.");
+    $toast.error("Could not remove order: HTTP Error.");
 };
 
 const mapURL = computed(() => {

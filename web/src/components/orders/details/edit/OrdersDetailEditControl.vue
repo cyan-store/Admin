@@ -148,6 +148,7 @@ import type { OrderDetails, OrderDetailsData, OrderProducts } from "@/types/type
 import type { Response } from "@/types";
 import { useAuthStore } from "@/stores/auth";
 import { useRequest } from "@/use/useRequest";
+import { useToast } from "vue-toast-notification";
 import { computed, onMounted, ref, reactive, watch } from "vue";
 import Joi from "joi";
 
@@ -160,6 +161,7 @@ const max = {
 };
 
 const auth = useAuthStore();
+const $toast = useToast();
 const props = defineProps<{
     user: string;
     order: string;
@@ -241,13 +243,13 @@ const setOrder = async () => {
     if (!odata.error && odata.data.status === 200) {
         errmsg.value = "";
 
-        // TODO: Custom order, use toast
-        alert(`Updated ${orderDiffs.value.join(", ")} for ${props.order}`);
+        $toast.success(`Updated ${orderDiffs.value.join(", ")} for ${props.order}`);
         router.push(`/@/users/${props.user}/orders/${props.order}`);
 
         return;
     }
 
+    $toast.error("Could not update order: HTTP Error.");
     errmsg.value = "HTTP Error.";
 };
 
@@ -287,9 +289,8 @@ const removeProduct = (product: OrderProducts) => {
 const addNewProduct = (product: OrderProducts) => {
     const ids = orderProductsData.value.map((n) => n.info.id);
 
-    // TODO: Custom alert, use toast
     if (ids.includes(product.info.id)) {
-        alert("Cannot add duplicate product!");
+        $toast.error("Cannot add duplicate product!");
         return;
     }
 

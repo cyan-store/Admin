@@ -31,16 +31,15 @@
                 </div>
             </div>
 
-            <!-- TODO: Proper dates -->
             <div>
                 <div>
                     <b>Created At: </b>
-                    <span>{{ productData.createdAt }}</span>
+                    <span :title="useDate(productData.createdAt)">{{ useNow(productData.createdAt) }}</span>
                 </div>
 
                 <div>
                     <b>Updated At: </b>
-                    <span>{{ productData.updatedAt }}</span>
+                    <span :title="useDate(productData.updatedAt)">{{ useNow(productData.updatedAt) }}</span>
                 </div>
             </div>
 
@@ -56,7 +55,9 @@
 <script lang="ts" setup>
 import type { ProductDetail, ProductDetailData } from "@/types/types/products";
 import { useAuthStore } from "@/stores/auth";
+import { useDate, useNow } from "@/use/useDate";
 import { useRequest } from "@/use/useRequest";
+import { useToast } from "vue-toast-notification";
 import { useRouter } from "vue-router";
 import { computed, onMounted, ref } from "vue";
 
@@ -64,6 +65,8 @@ import ProductDetailAssets from "./ProductDetailAssets.vue";
 
 const auth = useAuthStore();
 const router = useRouter();
+const $toast = useToast();
+
 const props = defineProps<{ id: string }>();
 
 const productData = ref<Partial<ProductDetailData>>({});
@@ -96,15 +99,15 @@ const deleteProduct = async () => {
     const pdata = await useRequest<Response>(`/products/${props.id}`, "DELETE", null, auth.token, loading);
 
     if (!pdata.error && pdata.data.status === 200) {
+        $toast.success(`Removed ${productData.value.title}.`);
         productData.value = {};
         errmsg.value = "";
-
         router.push(`/@/products`);
+
         return;
     }
 
-    // TODO: Use custom alert, maybe a toast
-    alert("HTTP Error.");
+    $toast.error("Could not remove product: HTTP Error.");
 };
 
 const tags = computed(() => {
