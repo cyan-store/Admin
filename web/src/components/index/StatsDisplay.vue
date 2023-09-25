@@ -27,10 +27,10 @@
 </template>
 
 <script lang="ts" setup>
-import type { Stats, StatsData } from "@/types/types/recent";
+import type { Stats, StatsData } from "@/types/types/stats";
 import { useAuthStore } from "@/stores/auth";
-import { onMounted, ref } from "vue";
 import { useRequest } from "@/use/useRequest";
+import { onMounted, ref } from "vue";
 
 const auth = useAuthStore();
 

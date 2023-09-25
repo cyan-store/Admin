@@ -22,6 +22,28 @@
                                 <span>Settings</span>
                             </RouterLink>
                         </li>
+                        <li>
+                            <RouterLink to="/@/system/logs">
+                                <CommandLineIcon class="h-4" />
+                                <span>Audit Log</span>
+                            </RouterLink>
+                        </li>
+                    </ul>
+
+                    <h4 class="opacity-60 font-bold mx-2 text-xs mt-4 mb-2">Recent</h4>
+                    <ul>
+                        <li>
+                            <RouterLink to="/@/recent">
+                                <CreditCardIcon class="h-4" />
+                                <span>Orders</span>
+                            </RouterLink>
+                        </li>
+                        <li>
+                            <RouterLink to="/@/recent/ratings">
+                                <StarIcon class="h-4" />
+                                <span>Ratings</span>
+                            </RouterLink>
+                        </li>
                     </ul>
 
                     <h4 class="opacity-60 font-bold mx-2 text-xs mt-4 mb-2">Management</h4>
@@ -56,11 +78,12 @@
 </template>
 
 <script setup lang="ts">
-import { HomeIcon, Cog6ToothIcon, UsersIcon, ShoppingBagIcon, ArrowLeftOnRectangleIcon } from "@heroicons/vue/24/outline";
 import { useAuthStore } from "@/stores/auth";
 import { useSite } from "@/use/useImage";
 import { RouterLink } from "vue-router";
 import { computed } from "vue";
+
+import { HomeIcon, Cog6ToothIcon, CommandLineIcon, CreditCardIcon, StarIcon, UsersIcon, ShoppingBagIcon, ArrowLeftOnRectangleIcon } from "@heroicons/vue/24/outline";
 
 const auth = useAuthStore();
 const logo = computed(() => useSite("logo/logo2.png"));
