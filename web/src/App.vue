@@ -1,6 +1,7 @@
 <template>
-    <NavBar />
-    <RouterView />
+    <NavBar>
+        <RouterView />
+    </NavBar>
 </template>
 
 <script lang="ts" setup>

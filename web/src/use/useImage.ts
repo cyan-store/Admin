@@ -12,3 +12,7 @@ export function useImage(images: string) {
 export function useAsset(image: string) {
     return `${assets}/products/${image}`;
 }
+
+export function useSite(image: string) {
+    return `${assets}/assets/site/${image}`;
+}
