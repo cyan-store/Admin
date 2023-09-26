@@ -2,12 +2,26 @@
     <div class="text-center">
         <div class="bg-base-200 p-4 rounded-md inline-block max-sm:w-full max-sm:h-[100vh]">
             <h2 class="text-4xl my-4 font-bold" :class="{ 'mb-8': !errmsg }">Login</h2>
-            <LoadingAuthItem :loading="loading" />
             <p v-if="errmsg" class="my-4 text-sm italic">{{ errmsg }}</p>
+            <LoadingAuthItem :loading="loading" />
 
             <div class="sm:px-10 px-2">
-                <input class="input input-bordered block max-sm:w-full" :disabled="loading" type="text" :class="{ 'input-secondary': invalidEmail }" v-model="email" placeholder="Email" />
-                <input class="input input-bordered block max-sm:w-full my-2" :disabled="loading" type="password" :class="{ 'input-secondary': invalidPassword }" v-model="password" placeholder="Password" />
+                <input
+                    class="input input-bordered block max-sm:w-full"
+                    :disabled="loading"
+                    type="text"
+                    :class="{ 'input-secondary': invalidEmail }"
+                    v-model="email"
+                    placeholder="Email"
+                />
+                <input
+                    class="input input-bordered block max-sm:w-full my-2"
+                    :disabled="loading"
+                    type="password"
+                    :class="{ 'input-secondary': invalidPassword }"
+                    v-model="password"
+                    placeholder="Password"
+                />
 
                 <div>
                     <p v-if="invalidEmail" class="my-4 text-sm italic">Invalid email!</p>

@@ -30,6 +30,5 @@ export interface SystemLogsData {
 export enum SystemLogMethod {
     Delete = "DELETE",
     Post = "POST",
-    Get = "GET"
+    Get = "GET",
 }
-
