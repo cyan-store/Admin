@@ -1,7 +1,7 @@
 <template>
     <div class="drawer" :class="{ 'lg:drawer-open': auth.authorized }">
         <input type="checkbox" class="drawer-toggle" />
-        <div class="drawer-content p-4">
+        <div class="drawer-content sm:p-4">
             <slot />
         </div>
         <div class="drawer-side">

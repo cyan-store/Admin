@@ -1,19 +1,21 @@
 <template>
-    <div>
-        <h2>Login</h2>
-        <p v-if="loading">Loading...</p>
-        <p v-if="errmsg">{{ errmsg }}</p>
+    <div class="text-center">
+        <div class="bg-base-200 p-4 rounded-md inline-block max-sm:w-full max-sm:h-[100vh]">
+            <h2 class="text-4xl my-4 font-bold" :class="{ 'mb-8': !errmsg }">Login</h2>
+            <LoadingAuthItem :loading="loading" />
+            <p v-if="errmsg" class="my-4 text-sm italic">{{ errmsg }}</p>
 
-        <div>
-            <input :disabled="loading" type="text" :class="{ invalid: invalidEmail }" v-model="email" placeholder="Email" />
-            <input :disabled="loading" type="password" :class="{ invalid: invalidPassword }" v-model="password" placeholder="Password" />
+            <div class="sm:px-10 px-2">
+                <input class="input input-bordered block max-sm:w-full" :disabled="loading" type="text" :class="{ 'input-secondary': invalidEmail }" v-model="email" placeholder="Email" />
+                <input class="input input-bordered block max-sm:w-full my-2" :disabled="loading" type="password" :class="{ 'input-secondary': invalidPassword }" v-model="password" placeholder="Password" />
 
-            <p v-if="invalidEmail">Invalid email!</p>
-            <p v-if="invalidPassword">Invalid Password!</p>
+                <div>
+                    <p v-if="invalidEmail" class="my-4 text-sm italic">Invalid email!</p>
+                    <p v-if="invalidPassword" class="my-4 text-sm italic">Invalid Password!</p>
+                </div>
 
-            <br />
-
-            <button :disabled="!valid" @click="login">Login</button>
+                <button class="btn btn-primary my-5 w-full" :disabled="!valid" @click="login">Submit</button>
+            </div>
         </div>
     </div>
 </template>
@@ -24,8 +26,9 @@ import { computed, ref, watch } from "vue";
 import { useRouter } from "vue-router";
 import { useAuthStore } from "@/stores/auth";
 import { useRequest } from "@/use/useRequest";
-
 import Joi from "joi";
+
+import LoadingAuthItem from "@/components/loading/LoadingAuthItem.vue";
 
 const router = useRouter();
 const auth = useAuthStore();
