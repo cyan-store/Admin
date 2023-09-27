@@ -1,17 +1,17 @@
 <template>
-    <div class="drawer" :class="{ 'drawer-open': auth.authorized && open, 'sm:drawer-open': auth.authorized }">
+    <div class="drawer" :class="{ 'drawer-open': auth.authorized && open, 'md:drawer-open': auth.authorized }">
         <input type="checkbox" class="drawer-toggle" />
         <div class="drawer-content">
-            <div class="sm:p-4" :class="{ 'max-sm:hidden': auth.authorized && open }">
+            <div class="md:p-4 p-2" :class="{ 'max-md:hidden': auth.authorized && open }">
                 <slot />
             </div>
 
-            <button v-if="auth.authorized" class="btn btn-primary sm:hidden fixed z-50 top-[80vh] left-[80vw] px-2" @click="open = !open">
+            <button v-if="auth.authorized" class="btn btn-primary md:hidden fixed z-50 top-[calc(100vh-70px)] left-[calc(100vw-70px)] px-2" @click="open = !open">
                 <Bars3Icon class="h-6" />
             </button>
         </div>
         <div class="drawer-side">
-            <div class="menu sm:w-80 min-h-full bg-base-200 text-base-content max-sm:w-[100vw]">
+            <div class="menu md:w-80 min-h-full bg-base-200 text-base-content max-md:w-[100vw] relative">
                 <img :src="logo" width="120" class="mb-4 ml-2" />
                 <template v-if="auth.authorized">
                     <h4 class="opacity-60 font-bold mx-2 text-xs my-2">System</h4>
@@ -77,6 +77,8 @@
                             </a>
                         </li>
                     </ul>
+
+                    <p class="absolute top-[calc(100%-1.5rem)] w-[95%] text-right opacity-60 text-xs font-bold">Welcome {{ auth.userData.name }}</p>
                 </template>
             </div>
         </div>

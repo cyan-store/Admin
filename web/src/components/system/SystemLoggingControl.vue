@@ -1,9 +1,9 @@
 <template>
     <div>
-        <p v-if="loading">Loading...</p>
-        <p v-if="errmsg">{{ errmsg }}</p>
+        <img v-if="loading" class="animate-spin mx-auto my-4" src="/svg/loading-spinner.svg" width="50" />
+        <p class="text-center m-auto font-bold text-2xl" v-else-if="errmsg">{{ errmsg }}</p>
         <div v-else>
-            <table>
+            <table class="table">
                 <thead>
                     <th>User</th>
                     <th>Location</th>
@@ -12,7 +12,7 @@
                 </thead>
                 <tbody>
                     <tr v-for="log in logs" :key="log.id">
-                        <td>{{ log.user }}</td>
+                        <td :title="log.id">{{ log.user }}</td>
                         <td>
                             <b>[{{ log.method }}] </b>
                             <span>{{ log.path }}</span>

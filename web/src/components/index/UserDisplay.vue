@@ -1,12 +1,17 @@
 <template>
-    <div>
-        <h2>User Information</h2>
-        <div>
-            <h4>{{ auth.userData.name }}</h4>
-            <p><b>ID:</b> {{ auth.userData.id }}</p>
-            <p><b>Email:</b> {{ auth.userData.email }}</p>
-            <p><b>Expire:</b> {{ useUnix(auth.userData.expire).fromNow() }}</p>
-        </div>
+    <div class="bg-base-200 rounded-md sm:text-center p-4 grid grid-cols-3 max-sm:grid-cols-1 grid-rows-1 gap-1">
+        <span>
+            <span class="font-bold">ID: </span>
+            <span>{{ auth.userData.id }}</span>
+        </span>
+        <span>
+            <span class="font-bold">Email: </span>
+            <span>{{ auth.userData.email }}</span>
+        </span>
+        <span>
+            <span class="font-bold">Expire: </span>
+            <span>{{ useUnix(auth.userData.expire).fromNow() }}</span>
+        </span>
     </div>
 </template>
 
