@@ -1,6 +1,7 @@
 <template>
     <div>
-        <h2>System Logs</h2>
+        <h2 class="text-3xl font-bold mb-2">Audit Log</h2>
+        <p class="text-sm font-bold opacity-60 mb-4">Chronological record of system activities.</p>
 
         <SystemLoggingControl />
     </div>

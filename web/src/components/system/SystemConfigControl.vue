@@ -1,48 +1,76 @@
 <template>
     <div>
-        <p v-if="loading">Loading...</p>
-        <p v-if="errmsg">{{ errmsg }}</p>
-        <div v-else>
+        <img v-if="loading" class="animate-spin mx-auto my-4" src="/svg/loading-spinner.svg" width="50" />
+        <div class="text-center font-bold bg-base-200 rounded-md py-[10rem]" v-else-if="errmsg">
+            <span class="text-2xl block mb-4">Request Error!</span>
+            <span class="text-error">{{ errmsg }}</span>
+        </div>
+        <div v-else class="max-md:p-2">
             <div>
-                <h4>Currency</h4>
-                <p v-if="invalidInput('currency')">Invalid currency.</p>
+                <h4 class="font-bold text-lg">Currency</h4>
+                <p class="text-sm opacity-60 mb-2">
+                    Currency listed on products. This does not affect the cost of products. Ensure products are listed at a proper price before
+                    changing.
+                </p>
+                <p v-if="invalidInput('currency')" class="my-4 text-error italic font-bold">Invalid currency.</p>
 
-                <input type="text" v-model="settingsDetails.currency" />
+                <input
+                    type="text"
+                    class="input input-bordered max-md:w-full max-md:mb-4"
+                    :class="{ 'input-error': invalidInput('currency') }"
+                    v-model="settingsDetails.currency"
+                />
             </div>
 
-            <div>
-                <h4>Allowed Shipping Country</h4>
-                <p v-if="invalidInput('shipping')">Invalid shipping.</p>
+            <div class="mt-2">
+                <h4 class="font-bold text-lg">Allowed Shipping Country</h4>
+                <p class="text-sm opacity-60 mb-2">Allows shipping to one country.</p>
+                <p v-if="invalidInput('shipping')" class="my-4 text-error italic font-bold">Invalid shipping.</p>
 
-                <input type="text" v-model="settingsDetails.shipping" />
+                <input
+                    type="text"
+                    class="input input-bordered max-md:w-full max-md:mb-4"
+                    :class="{ 'input-error': invalidInput('shipping') }"
+                    v-model="settingsDetails.shipping"
+                />
             </div>
 
-            <div>
-                <h4>Shipping Cost</h4>
-                <p v-if="invalidInput('shippingCost')">Invalid shipping cost.</p>
+            <div class="mt-2">
+                <h4 class="font-bold text-lg">Shipping Cost</h4>
+                <p class="text-sm opacity-60 mb-2">Default cost of shipping.</p>
+                <p v-if="invalidInput('shippingCost')" class="my-4 text-error italic font-bold">Invalid shipping cost.</p>
 
-                <input type="number" v-model="settingsDetails.shippingCost" />
+                <input
+                    type="number"
+                    class="input input-bordered max-md:w-full max-md:mb-4"
+                    :class="{ 'input-error': invalidInput('shippingCost') }"
+                    v-model="settingsDetails.shippingCost"
+                />
             </div>
 
-            <div>
-                <h4>Allow Purchases?</h4>
+            <div class="mt-2">
+                <h4 class="font-bold text-lg">Allow Purchases?</h4>
+                <p class="text-sm opacity-60 mb-2">Enable/disable purchases on website.</p>
 
-                <select v-model="settingsDetails.purchase">
+                <select class="select select-bordered max-md:w-full max-md:mb-4 min-w-[240px]" v-model="settingsDetails.purchase">
                     <option value="true">Yes</option>
                     <option value="false">No</option>
                 </select>
             </div>
 
-            <div>
-                <h4>Allow User Ratings?</h4>
+            <div class="mt-2">
+                <h4 class="font-bold text-lg">Allow User Ratings?</h4>
+                <p class="text-sm opacity-60 mb-2">Enable/disable ratings/reviews on website.</p>
 
-                <select v-model="settingsDetails.ratings">
+                <select class="select select-bordered max-md:w-full max-md:mb-4 min-w-[240px]" v-model="settingsDetails.ratings">
                     <option value="true">Yes</option>
                     <option value="false">No</option>
                 </select>
             </div>
 
-            <button :disabled="isInvalidConfig || noneChanged" @click="updateSettings">Update</button>
+            <button class="btn btn-primary mt-4 max-md:w-full" :disabled="isInvalidConfig || noneChanged" @click="updateSettings">
+                Update
+            </button>
         </div>
     </div>
 </template>
