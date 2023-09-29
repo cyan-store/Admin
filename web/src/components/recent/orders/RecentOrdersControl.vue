@@ -1,31 +1,41 @@
 <template>
     <div>
-        <p v-if="loading">Loading...</p>
-        <div>
-            <select v-model="control.shipping" :disabled="loading">
-                <option value="any">Any</option>
-                <option value="PENDING">Pending</option>
-                <option value="SHIPPED">Shipped</option>
-                <option value="DELIVERED">Delivered</option>
-                <option value="CANCELED">Canceled</option>
-                <option value="UNKNOWN">Unknown</option>
-            </select>
+        <div class="grid lg:grid-cols-2 grid-cols-1 gap-2 lg:max-w-[calc(100vw-20rem-2rem)] max-w-[calc(100vw-1rem)]">
+            <div class="join">
+                <button class="btn join-item">Shipping</button>
+                <select class="select join-item select-bordered w-full" v-model="control.shipping" :disabled="loading">
+                    <option value="any">Any</option>
+                    <option value="PENDING">Pending</option>
+                    <option value="SHIPPED">Shipped</option>
+                    <option value="DELIVERED">Delivered</option>
+                    <option value="CANCELED">Canceled</option>
+                    <option value="UNKNOWN">Unknown</option>
+                </select>
+            </div>
 
-            <select v-model="control.payment" :disabled="loading">
-                <option value="any">Any</option>
-                <option value="UNPAID">Unpaid</option>
-                <option value="PAID">Paid</option>
-                <option value="FAILED">Failed</option>
-                <option value="CANCELED">Canceled</option>
-                <option value="REFUNDED">Refunded</option>
-            </select>
+            <div class="join">
+                <button class="btn join-item">Payment</button>
+                <select class="select join-item select-bordered w-full" v-model="control.payment" :disabled="loading">
+                    <option value="any">Any</option>
+                    <option value="UNPAID">Unpaid</option>
+                    <option value="PAID">Paid</option>
+                    <option value="FAILED">Failed</option>
+                    <option value="CANCELED">Canceled</option>
+                    <option value="REFUNDED">Refunded</option>
+                </select>
+            </div>
+
+            <PaginateItem :page="control.page" :disabled="loading" @clicked="update" />
         </div>
 
-        <div>
-            <p v-if="errmsg">{{ errmsg }}</p>
+        <div class="overflow-x-auto">
+            <hr class="my-4" />
+            
+            <img v-if="loading" class="animate-spin mx-auto my-4" src="/svg/loading-spinner.svg" width="50" />
+            <p v-else-if="errmsg" class="font-bold my-4 text-center">{{ errmsg }}</p>
             <template v-else>
-                <p v-if="!data.length">No orders found!</p>
-                <table v-else>
+                <p v-if="!data.length" class="font-bold my-4 text-center">No orders found!</p>
+                <table v-else class="table">
                     <thead>
                         <tr>
                             <th>User ID</th>
@@ -47,8 +57,6 @@
                 </table>
             </template>
         </div>
-
-        <PaginateItem :page="control.page" :disabled="loading" @clicked="update" />
     </div>
 </template>
 

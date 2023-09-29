@@ -1,8 +1,14 @@
 <template>
     <div>
-        <button @click="updatePage(-1)" :disabled="disabled || page <= 0">&lt;</button>
-        <span>{{ page + 1 }}</span>
-        <button @click="updatePage(1)" :disabled="disabled">&gt;</button>
+        <button class="btn btn-primary font-bold min-h-[1.5rem] h-[1.5rem] px-[0.5rem]" @click="updatePage(-1)" :disabled="disabled || page <= 0">
+            &lt;
+        </button>
+
+        <span class="text-lg font-bold mx-2 select-none">{{ page + 1 }}</span>
+
+        <button class="btn btn-primary font-bold min-h-[1.5rem] h-[1.5rem] px-[0.5rem]" @click="updatePage(1)" :disabled="disabled || page >= 200">
+            &gt;
+        </button>
     </div>
 </template>
 

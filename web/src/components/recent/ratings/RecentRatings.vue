@@ -16,7 +16,7 @@
         <td :title="useDate(data.updatedAt)">{{ useNow(data.updatedAt) }}</td>
 
         <td>
-            <button @click="details">Details</button>
+            <button class="btn btn-primary btn-xs" @click="details">Details</button>
         </td>
     </tr>
 </template>

@@ -1,29 +1,40 @@
 <template>
     <div>
-        <p v-if="loading">Loading...</p>
         <div>
-            <select v-model="control.rating" :disabled="loading">
-                <option value="0">Any</option>
-                <option value="1">1 Star</option>
-                <option value="2">2 Star</option>
-                <option value="3">3 Star</option>
-                <option value="4">4 Star</option>
-                <option value="5">5 Star</option>
-            </select>
-
-            <div>
-                <h4>Leave blank for any.</h4>
-
-                <DelayedInputItem v-model="control.userID" placehold="User ID" />
-                <DelayedInputItem v-model="control.productID" placehold="Product ID" />
+            <div class="join block">
+                <button class="btn join-item w-[150px] max-md:hidden">Rating</button>
+                <select class="select md:join-item select-bordered min-w-[240px] max-md:w-[calc(100vw-1rem)]" v-model="control.rating" :disabled="loading">
+                    <option value="0">Any</option>
+                    <option value="1">1 Star</option>
+                    <option value="2">2 Star</option>
+                    <option value="3">3 Star</option>
+                    <option value="4">4 Star</option>
+                    <option value="5">5 Star</option>
+                </select>
             </div>
+
+            <div class="join block my-2">
+                <button class="btn join-item w-[150px] max-md:hidden">User ID</button>
+                <DelayedInputItem classes="input md:join-item input-bordered min-w-[240px] max-md:w-[calc(100vw-1rem)]" v-model="control.userID" placehold="User ID" />
+            </div>
+
+            <div class="join block mb-2">
+                <button class="btn join-item w-[150px] max-md:hidden">Product ID</button>
+                <DelayedInputItem classes="input md:join-item input-bordered min-w-[240px] max-md:w-[calc(100vw-1rem)]" v-model="control.productID" placehold="Product ID" />
+            </div>
+
+            <h4 class="my-4 text-sm opacity-70">Leave blank for any ID.</h4>
+            <PaginateItem :page="control.page" :disabled="loading" @clicked="update" />
         </div>
 
-        <div>
-            <p v-if="errmsg">{{ errmsg }}</p>
+        <div class="overflow-x-auto">
+            <hr class="my-4" />
+
+            <img v-if="loading" class="animate-spin mx-auto my-4" src="/svg/loading-spinner.svg" width="50" />
+            <p v-else-if="errmsg" class="font-bold my-4 text-center">{{ errmsg }}</p>
             <template v-else>
-                <p v-if="!data.length">No ratings found!</p>
-                <table v-else>
+                <p v-if="!data.length" class="font-bold my-4 text-center">No ratings found!</p>
+                <table v-else class="table">
                     <thead>
                         <tr>
                             <th>Product ID</th>
@@ -42,8 +53,6 @@
                 </table>
             </template>
         </div>
-
-        <PaginateItem :page="control.page" :disabled="loading" @clicked="update" />
     </div>
 </template>
 
