@@ -1,6 +1,7 @@
 <template>
     <div>
-        <h2>User Details</h2>
+        <h2 class="text-3xl font-bold mb-2">Users Details</h2>
+        <p class="text-sm font-bold opacity-60 mb-4">User details, orders, and ratings.</p>
 
         <Auth0TokenManager />
         <UserDetailsControl :id="user" />

@@ -1,13 +1,33 @@
 <template>
     <div>
-        <p v-if="loading">Loading...</p>
-        <p v-if="errmsg">{{ errmsg }}</p>
+        <img v-if="loading" class="animate-spin mx-auto my-4" src="/svg/loading-spinner.svg" width="50" />
+        <div v-else-if="errmsg" class="font-bold my-4">
+            <span>Could not get token: </span>
+            <span class="text-error">{{ errmsg }}</span>
+        </div>
+        <div v-else>
+            <input
+                type="text"
+                class="input input-bordered input-sm max-md:w-[calc(100vw-1rem)]"
+                :value="token"
+                placeholder="Request auth0 token..."
+                readonly
+            />
 
-        <div>
-            <input type="text" :value="token" placeholder="Request auth0 token..." readonly />
-
-            <button :disabled="loading" @click="getToken">Request Token</button>
-            <button :disabled="loading" @click="removeToken">Remove Token</button>
+            <button
+                class="btn btn-success text-base-200 btn-sm max-md:block max-md:w-[calc(100vw-1rem)] max-md:my-2 md:mx-2"
+                :disabled="loading"
+                @click="getToken"
+            >
+                Fetch
+            </button>
+            <button
+                class="btn btn-error text-base-200 btn-sm max-md:w-[calc(100vw-1rem)]"
+                :disabled="loading || auth0.token === ''"
+                @click="removeToken"
+            >
+                Remove
+            </button>
         </div>
     </div>
 </template>

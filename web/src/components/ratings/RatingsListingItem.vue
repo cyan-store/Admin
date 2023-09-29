@@ -10,7 +10,7 @@
         <td v-else><b>No content provided.</b></td>
 
         <!-- TODO: vue-stars -->
-        <td>{{ data.rating }}</td>
+        <td>{{ data.rating }}*</td>
         <td>
             <RouterLink :to="`/@/products/${data.productID}`">{{ data.productID }}</RouterLink>
         </td>
@@ -18,7 +18,7 @@
         <td :title="useDate(data.createdAt)">{{ useNow(data.createdAt) }}</td>
         <td :title="useDate(data.updatedAt)">{{ useNow(data.updatedAt) }}</td>
         <td>
-            <button @click="details">Details</button>
+            <button class="btn btn-xs" @click="details">Details</button>
         </td>
     </tr>
 </template>

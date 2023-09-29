@@ -1,31 +1,38 @@
 <template>
     <div>
-        <button @click="updateSort" :disabled="loading">{{ sort.toUpperCase() }}</button>
+        <div class="md:flex">
+            <PaginateItem class="max-md:w-[calc(100vw-1rem)] max-md:text-center" :page="page" :disabled="loading" @clicked="update" />
+            <button class="btn btn-sm btn-secondary md:ml-2 max-md:w-[calc(100vw-1rem)] max-md:mt-2" @click="updateSort" :disabled="loading">
+                {{ sort.toUpperCase() }}
+            </button>
+        </div>
 
-        <p v-if="loading">Loading...</p>
-        <p v-if="errmsg">{{ errmsg }}</p>
-        <table v-else>
-            <thead>
-                <tr>
-                    <th>Order ID</th>
-                    <th>Product IDs</th>
-                    <th>Status</th>
-                    <th>Amount Paid</th>
-                    <th>Country</th>
-                    <th>Shipping Postal</th>
-                    <th>Shipping Status</th>
-                    <th>Created</th>
-                    <th>Updated</th>
-                    <th>Details</th>
-                </tr>
-            </thead>
-            <tbody>
-                <p v-if="!orders.length && !loading">Nothing found!</p>
-                <OrdersListingItemVue v-for="order in orders" :key="order.id" :data="order" />
-            </tbody>
-        </table>
+        <hr class="my-4" />
 
-        <PaginateItem :page="page" :disabled="loading" @clicked="update" />
+        <img v-if="loading" class="animate-spin mx-auto my-4" src="/svg/loading-spinner.svg" width="50" />
+        <p v-else-if="errmsg" class="font-bold my-4 text-center">{{ errmsg }}</p>
+        <template v-else>
+            <p v-if="!orders.length && !loading" class="font-bold my-[10rem] text-center">Nothing found!</p>
+            <table v-else class="table">
+                <thead>
+                    <tr>
+                        <th>Order ID</th>
+                        <th>Product IDs</th>
+                        <th>Status</th>
+                        <th>Amount Paid</th>
+                        <th>Country</th>
+                        <th>Shipping Postal</th>
+                        <th>Shipping Status</th>
+                        <th>Created</th>
+                        <th>Updated</th>
+                        <th>Details</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <OrdersListingItemVue v-for="order in orders" :key="order.id" :data="order" />
+                </tbody>
+            </table>
+        </template>
     </div>
 </template>
 

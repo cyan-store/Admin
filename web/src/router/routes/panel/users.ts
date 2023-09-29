@@ -35,7 +35,7 @@ export default [
                         path: "",
                         name: "user_orders",
                         component: OrderListing,
-                        meta: { title: "Order Listing" },
+                        meta: { title: "User Orders" },
                     },
 
                     {
@@ -46,7 +46,7 @@ export default [
                                 path: "",
                                 name: "user_orders_details",
                                 component: OrderDetails,
-                                meta: { title: "Order Details" },
+                                meta: { title: "User Order Details" },
                             },
 
                             {
@@ -68,12 +68,14 @@ export default [
                         path: "",
                         name: "user_ratings",
                         component: RatingListing,
+                        meta: { title: "User Ratings" },
                     },
 
                     {
                         path: ":rating",
                         name: "user_ratings_details",
                         component: RatingDetails,
+                        meta: { title: "User Rating Details" },
                     },
                 ],
             },

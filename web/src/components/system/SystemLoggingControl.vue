@@ -14,7 +14,7 @@
                     <tr v-for="log in logs" :key="log.id">
                         <td :title="log.id">{{ log.user }}</td>
                         <td>
-                            <b>[{{ log.method }}] </b>
+                            <strong>[{{ log.method }}] </strong>
                             <span>{{ log.path }}</span>
                         </td>
 

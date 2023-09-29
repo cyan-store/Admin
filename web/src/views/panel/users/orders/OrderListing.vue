@@ -1,9 +1,10 @@
 <template>
     <div>
-        <h2>Order Listing</h2>
+        <h2 class="text-3xl font-bold mb-2">User Orders</h2>
+        <p class="text-sm font-bold opacity-60 mb-4">A list of a user's orders. Ordered by date.</p>
 
         <OrdersListingControl :id="user" />
-        <button @click="back">Back to Profile</button>
+        <button class="btn btn-sm mt-4" @click="back">Back to Profile</button>
     </div>
 </template>
 

@@ -1,6 +1,7 @@
 <template>
     <div>
-        <h2>Users Listing</h2>
+        <h2 class="text-3xl font-bold mb-2">Users Listing</h2>
+        <p class="text-sm font-bold opacity-60 mb-4">A list of users. Requires a token to fetch.</p>
 
         <Auth0TokenManager />
         <UserListingControl />

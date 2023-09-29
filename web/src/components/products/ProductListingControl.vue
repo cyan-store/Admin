@@ -1,16 +1,26 @@
 <template>
     <div>
-        <div>
-            <DelayedInputItem v-model="filter.search" placehold="Search product..." />
-            <button @click="updateSort" :disabled="loading">{{ filter.sort.toUpperCase() }}</button>
-            <button @click="newProduct">New Product</button>
-
-            <p>Found: {{ productData?.count || 0 }}</p>
+        <div class="md:flex max-md:w-[calc(100vw-1rem)] text-center">
+            <DelayedInputItem classes="input input-bordered input-sm max-md:w-full" v-model="filter.search" placehold="Search product..." />
+            <button class="btn btn-sm btn-primary max-md:w-full md:mx-2 max-md:my-2" @click="updateSort" :disabled="loading">
+                {{ filter.sort.toUpperCase() }}
+            </button>
+            <button class="btn btn-sm btn-secondary max-md:w-full" @click="newProduct">New Product</button>
         </div>
 
-        <p v-if="loading">Loading...</p>
-        <div v-else-if="!errmsg">
-            <table v-if="productData?.products?.length !== 0">
+        <div class="md:flex my-2 max-md:w-[calc(100vw-1rem)] text-center">
+            <PaginateItem @clicked="update" :page="filter.page" :disabled="loading" />
+            <div class="py-[2px] md:ml-2">
+                <strong>Found: </strong>
+                <span>{{ productData?.count || 0 }}</span>
+            </div>
+        </div>
+
+        <img v-if="loading" class="animate-spin mx-auto my-4" src="/svg/loading-spinner.svg" width="50" />
+        <p v-else-if="errmsg" class="font-bold my-4 text-center">{{ errmsg }}</p>
+        <template v-else>
+            <p v-if="productData?.products?.length === 0" class="font-bold my-4 text-center">No orders found!</p>
+            <table v-else class="table">
                 <thead>
                     <tr>
                         <th>Image</th>
@@ -27,11 +37,7 @@
                     <ProductListingItem v-for="product in productData.products" :key="product.id" :data="product" />
                 </tbody>
             </table>
-            <p v-else>Nothing found!</p>
-        </div>
-        <p v-else>{{ errmsg }}</p>
-
-        <PaginateItem @clicked="update" :page="filter.page" :disabled="loading" />
+        </template>
     </div>
 </template>
 

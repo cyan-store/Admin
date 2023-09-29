@@ -1,10 +1,13 @@
 <template>
     <div>
-        <p v-if="!hasToken">Token is required!</p>
-        <div v-else>
-            <p v-if="loading">Loading...</p>
+        <p v-if="!hasToken" class="font-bold my-2">Token is required!</p>
+        <img v-else-if="loading" class="animate-spin mx-auto my-4" src="/svg/loading-spinner.svg" width="50" />
+        <p v-else-if="errmsg" class="font-bold my-4 text-center">{{ errmsg }}</p>
+        <div v-else class="my-4">
+            <PaginateItem :page="page" :disabled="!hasToken" @clicked="update" />
+            <hr class="my-4" />
 
-            <table v-if="!errmsg">
+            <table class="table">
                 <thead>
                     <tr>
                         <th>Picture</th>
@@ -22,10 +25,7 @@
                     <UserListingItem v-for="user in users" :key="user.user_id" :data="user" />
                 </tbody>
             </table>
-            <p v-else>{{ errmsg }}</p>
         </div>
-
-        <PaginateItem :page="page" :disabled="!hasToken" @clicked="update" />
     </div>
 </template>
 

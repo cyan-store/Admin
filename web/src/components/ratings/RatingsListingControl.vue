@@ -1,29 +1,36 @@
 <template>
     <div>
-        <button @click="updateSort" :disabled="loading">{{ sort.toUpperCase() }}</button>
+        <div class="md:flex">
+            <PaginateItem class="max-md:w-[calc(100vw-1rem)] max-md:text-center" :page="page" :disabled="loading" @clicked="update" />
+            <button class="btn btn-sm btn-secondary md:ml-2 max-md:w-[calc(100vw-1rem)] max-md:mt-2" @click="updateSort" :disabled="loading">
+                {{ sort.toUpperCase() }}
+            </button>
+        </div>
 
-        <p v-if="loading">Loading...</p>
-        <p v-if="errmsg">{{ errmsg }}</p>
-        <table v-else>
-            <thead>
-                <tr>
-                    <th>ID</th>
-                    <th>Display Name</th>
-                    <th>Description</th>
-                    <th>Rating</th>
-                    <th>Product ID</th>
-                    <th>Created</th>
-                    <th>Updated</th>
-                    <th>Details</th>
-                </tr>
-            </thead>
-            <tbody>
-                <p v-if="!ratings.length && !loading">Nothing found!</p>
-                <RatingsListingItem v-for="rating in ratings" :key="rating.id" :data="rating" />
-            </tbody>
-        </table>
+        <hr class="my-4" />
 
-        <PaginateItem :page="page" :disabled="loading" @clicked="update" />
+        <img v-if="loading" class="animate-spin mx-auto my-4" src="/svg/loading-spinner.svg" width="50" />
+        <p v-else-if="errmsg" class="font-bold my-4 text-center">{{ errmsg }}</p>
+        <template v-else>
+            <p v-if="!ratings.length && !loading" class="font-bold my-[10rem] text-center">Nothing found!</p>
+            <table v-else class="table">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Display Name</th>
+                        <th>Description</th>
+                        <th>Rating</th>
+                        <th>Product ID</th>
+                        <th>Created</th>
+                        <th>Updated</th>
+                        <th>Details</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <RatingsListingItem v-for="rating in ratings" :key="rating.id" :data="rating" />
+                </tbody>
+            </table>
+        </template>
     </div>
 </template>
 

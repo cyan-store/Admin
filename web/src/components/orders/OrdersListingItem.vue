@@ -5,12 +5,17 @@
         </td>
 
         <td>
-            <ul>
-                <li v-for="product in productList" :key="product">
-                    <RouterLink :to="`/@/products/${product}`">{{ product }}</RouterLink>
-                    <b> x{{ quantityList[productList.indexOf(product)] }}</b>
-                </li>
-            </ul>
+            <details class="dropdown">
+                <summary class="m-1 btn btn-xs">Expand</summary>
+                <ul class="menu dropdown-content z-[1] bg-base-200 rounded-box">
+                    <li v-for="product in productList" :key="product">
+                        <span>
+                            <RouterLink :to="`/@/products/${product}`">{{ product }}</RouterLink>
+                            <strong> x{{ quantityList[productList.indexOf(product)] }}</strong>
+                        </span>
+                    </li>
+                </ul>
+            </details>
         </td>
 
         <td>{{ data.status }}</td>
@@ -22,7 +27,7 @@
         <td :title="useDate(data.createdAt)">{{ useNow(data.createdAt) }}</td>
         <td :title="useDate(data.updatedAt)">{{ useNow(data.updatedAt) }}</td>
         <td>
-            <button @click="details">Details</button>
+            <button class="btn btn-xs" @click="details">Details</button>
         </td>
     </tr>
 </template>

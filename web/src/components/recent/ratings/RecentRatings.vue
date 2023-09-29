@@ -11,7 +11,7 @@
         <!-- TODO: Use vue-stars -->
         <td>{{ data.rating }}*</td>
 
-        <td :class="{ nodesc: !data?.description }">{{ review }}</td>
+        <td :class="{ 'font-bold': !data?.description }">{{ review }}</td>
         <td :title="useDate(data.createdAt)">{{ useNow(data.createdAt) }}</td>
         <td :title="useDate(data.updatedAt)">{{ useNow(data.updatedAt) }}</td>
 
@@ -40,9 +40,3 @@ const details = () => {
     router.push(`/@/users/${props.data.user}/ratings/${props.data.id}`);
 };
 </script>
-
-<style scoped>
-.nodesc {
-    color: red;
-}
-</style>

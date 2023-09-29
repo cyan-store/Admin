@@ -1,7 +1,9 @@
 <template>
     <tr>
-        <td>
-            <img :src="data.picture" width="50" height="50" />
+        <td class="avatar">
+            <div class="mask mask-squircle w-12 h-12">
+                <img :src="data.picture" width="50" height="50" />
+            </div>
         </td>
 
         <td>{{ data.name }}</td>
@@ -12,7 +14,7 @@
         <td>{{ data.last_login }}</td>
 
         <td>
-            <button @click="details">Details</button>
+            <button class="btn btn-xs" @click="details">Details</button>
         </td>
     </tr>
 </template>
