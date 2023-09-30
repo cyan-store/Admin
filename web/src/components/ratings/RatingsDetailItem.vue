@@ -1,43 +1,48 @@
 <template>
     <div>
-        <p v-if="loading">Loading...</p>
-        <div v-else-if="!errmsg">
+        <img v-if="loading" class="animate-spin mx-auto my-4" src="/svg/loading-spinner.svg" width="50" />
+        <p v-else-if="errmsg" class="font-bold my-[10rem] text-center">{{ errmsg }}</p>
+        <div v-else>
             <div>
-                <b>Display Name: </b>
+                <strong>Display Name: </strong>
                 <span>{{ ratingData.name }}</span>
             </div>
 
             <div>
-                <b>Rating: </b>
+                <strong>Rating: </strong>
 
                 <!-- TODO: vue-stars -->
                 <span>{{ ratingData.rating }}*</span>
             </div>
 
             <div>
-                <b>Description: </b>
-                <textarea v-if="ratingData.description" :value="ratingData.description" readonly></textarea>
-                <span v-else>No content provided.</span>
+                <template v-if="!ratingData.description">
+                    <strong>Description: </strong>
+                    <span class="italic">No content provided.</span>
+                </template>
+                <textarea v-else class="textarea textarea-bordered my-4 max-md:w-[calc(100vw-1rem)]" :value="ratingData.description" readonly></textarea>
             </div>
 
             <div>
-                <b>Created: </b>
-                <span>{{ ratingData.createdAt }}</span>
+                <strong>Created: </strong>
+                <span :title="useDate(ratingData.createdAt)">{{ useNow(ratingData.createdAt) }}</span>
             </div>
 
             <div>
-                <b>Updated: </b>
-                <span>{{ ratingData.updatedAt }}</span>
+                <strong>Updated: </strong>
+                <span :title="useDate(ratingData.updatedAt)">{{ useNow(ratingData.updatedAt) }}</span>
             </div>
 
-            <div>
-                <button @click="productPage">Product Page</button>
-                <button @click="deleteRating">Delete Rating</button>
+            <div class="my-4">
+                <button class="btn btn-primary max-md:w-[calc(100vw-1rem)]" @click="productPage">Product Page</button>
+                <button class="btn btn-error max-md:w-[calc(100vw-1rem)] md:ml-2 max-md:my-2" @click="deleteRating">Delete Rating</button>
             </div>
         </div>
-        <p v-else>{{ errmsg }}</p>
 
-        <RouterLink :to="`/@/users/${props.user}/ratings`">Back to Ratings</RouterLink>
+        <div>
+            <hr class="my-4" />
+            <RouterLink class="btn btn-sm" :to="`/@/users/${props.user}/ratings`">Back to Ratings</RouterLink>
+        </div>
     </div>
 </template>
 
@@ -46,6 +51,7 @@ import type { UserRating, UserRatingData } from "@/types/types/ratings";
 import type { Response } from "@/types";
 import { useAuthStore } from "@/stores/auth";
 import { useRequest } from "@/use/useRequest";
+import { useDate, useNow } from "@/use/useDate";
 import { useToast } from "vue-toast-notification";
 import { useRouter } from "vue-router";
 import { onMounted, ref } from "vue";

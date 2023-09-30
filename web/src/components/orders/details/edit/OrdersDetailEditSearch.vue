@@ -1,19 +1,32 @@
 <template>
-    <button @click="openProduct">Add Product</button>
+    <button class="btn btn-sm" @click="openProduct">Add Product</button>
 
     <DialogItem :open="open" @exit="openProduct">
         <div>
-            <DelayedInputItem v-model="search.query" placehold="Search..." />
-            <button @click="search.sort = search.sort === 'asc' ? 'desc' : 'asc'" :disabled="loading || !!errmsg">
+            <DelayedInputItem class="input input-sm input-bordered max-md:w-full" v-model="search.query" placehold="Search..." />
+            <button
+                class="btn btn-sm btn-secondary md:ml-2 my-2 max-md:w-full"
+                @click="search.sort = search.sort === 'asc' ? 'desc' : 'asc'"
+                :disabled="loading || !!errmsg"
+            >
                 {{ search.sort.toUpperCase() }}
             </button>
-
-            <p>Found: {{ searchData?.count || 0 }}</p>
         </div>
 
-        <p v-if="loading">Loading...</p>
-        <div v-else-if="!errmsg">
-            <table v-if="searchData.products?.length">
+        <div class="md:flex text-center">
+            <PaginateItem :page="search.page" :disabled="loading || !!errmsg" @clicked="update" />
+            <div class="py-[2px] md:ml-2">
+                <strong>Found: </strong>
+                <span>{{ searchData?.count || 0 }}</span>
+            </div>
+        </div>
+
+        <hr class="my-4" />
+
+        <img v-if="loading" class="animate-spin mx-auto my-4" src="/svg/loading-spinner.svg" width="50" />
+        <p v-else-if="errmsg" class="font-bold my-[10rem] text-center">{{ errmsg }}</p>
+        <div v-else>
+            <table v-if="searchData.products?.length" class="table">
                 <thead>
                     <tr>
                         <th>Image</th>
@@ -26,28 +39,29 @@
                 </thead>
                 <tbody>
                     <tr v-for="product in searchData.products" :key="product.id">
-                        <td>
-                            <img :src="useImage(product.images)" height="100" />
+                        <td class="avatar">
+                            <div class="mask mask-squircle w-12 h-12">
+                                <img :src="useImage(product.images)" height="100" />
+                            </div>
                         </td>
                         <td>
-                            <RouterLink :to="`/@/products/${product.id}`">{{ product.title }}</RouterLink>
+                            <RouterLink class="link text-info no-underline hover:underline font-bold" :to="`/@/products/${product.id}`">
+                                {{ product.title }}
+                            </RouterLink>
                         </td>
 
                         <td>${{ (product.price / 100).toFixed(2) }}</td>
-                        <td>{{ product.stock }}</td>
+                        <td>{{ useStock(product.stock) }}</td>
 
                         <td :title="useDate(product.updatedAt)">{{ useNow(product.updatedAt) }}</td>
                         <td>
-                            <button @click="addProduct(product)">Add</button>
+                            <button class="btn btn-xs" @click="addProduct(product)">Add</button>
                         </td>
                     </tr>
                 </tbody>
             </table>
-            <p v-else-if="searchData?.products?.length === 0">Nothing found!</p>
+            <p v-else class="font-bold text-center my-[100px]">Nothing found!</p>
         </div>
-        <p v-else>{{ errmsg }}</p>
-
-        <PaginateItem :page="search.page" :disabled="loading || !!errmsg" @clicked="update" />
     </DialogItem>
 </template>
 
@@ -56,6 +70,7 @@ import type { ProductSearch, ProductSearchData, ProductSearchDetail } from "@/ty
 import type { OrderProducts } from "@/types/types/orders";
 import { useAuthStore } from "@/stores/auth";
 import { useDate, useNow } from "@/use/useDate";
+import { useStock } from "@/use/useDatabase";
 import { useRequest } from "@/use/useRequest";
 import { useImage } from "@/use/useImage";
 import { reactive, ref, watch } from "vue";
@@ -68,7 +83,7 @@ const auth = useAuthStore();
 const open = ref(false);
 const search = reactive({
     query: "",
-    sort: "asc",
+    sort: "desc",
     page: 0,
 });
 

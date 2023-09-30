@@ -1,9 +1,19 @@
 <template>
     <teleport to="#popup">
-        <dialog :open="props.open">
-            <button @click="emits('exit')">Close</button>
+        <dialog class="modal" :open="props.open">
+            <div class="modal-box">
+                <slot />
 
-            <slot />
+                <div class="modal-action">
+                    <form method="dialog">
+                        <button class="btn" @click="emits('exit')">Close</button>
+                    </form>
+                </div>
+            </div>
+
+            <div class="modal-backdrop">
+                <button @click="emits('exit')">X</button>
+            </div>
         </dialog>
     </teleport>
 </template>

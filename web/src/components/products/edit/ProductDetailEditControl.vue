@@ -207,7 +207,7 @@ const invalidInput = (option: keyof typeof valid) => {
 const modifiedClass = (...args: string[]) => {
     for (const a of args) {
         if (productDiffs.value.includes(a)) {
-            return "modified";
+            return "italic before:content-['*'] after:content-['*'] opacity-60";
         }
     }
 
@@ -232,9 +232,3 @@ onMounted(() => {
     if (props.id) getDetails();
 });
 </script>
-
-<style scoped>
-.modified {
-    color: red;
-}
-</style>

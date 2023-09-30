@@ -7,7 +7,9 @@
         <td>{{ data.name }}</td>
 
         <td v-if="data.description">{{ data.description }}</td>
-        <td v-else><b>No content provided.</b></td>
+        <td v-else>
+            <strong>No content provided.</strong>
+        </td>
 
         <!-- TODO: vue-stars -->
         <td>{{ data.rating }}*</td>

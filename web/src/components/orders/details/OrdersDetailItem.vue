@@ -1,103 +1,117 @@
 <template>
     <div>
-        <p v-if="loading">Loading...</p>
+        <img v-if="loading" class="animate-spin mx-auto my-4" src="/svg/loading-spinner.svg" width="50" />
+        <p v-else-if="errmsg" class="font-bold my-[10rem] text-center">{{ errmsg }}</p>
         <div v-else-if="!errmsg && orderData.order">
-            <h4>Order ID: {{ orderData.order.id }}</h4>
+            <hr class="my-4" />
 
-            <table>
-                <tr>
-                    <th>Transaction ID</th>
-                    <td>{{ orderData.order.transactionID }}</td>
-                </tr>
-                <tr>
-                    <th>Payment Status</th>
-                    <td>{{ orderData.order.status }}</td>
-                </tr>
-                <tr>
-                    <th>Total Amount Purchased</th>
-                    <td>{{ orderSum }}x</td>
-                </tr>
-                <tr>
-                    <th>Amount Paid</th>
-                    <td>${{ (orderData.order.amount / 100).toFixed(2) }}</td>
-                </tr>
-                <tr>
-                    <th>Email</th>
-                    <td>
-                        <a :href="`mailto:${orderData.order.email}`">{{ orderData.order.email }}</a>
-                    </td>
-                </tr>
-                <tr>
-                    <th>Created</th>
-                    <td>{{ orderData.order.createdAt }}</td>
-                </tr>
-                <tr>
-                    <th>Updated</th>
-                    <td>{{ orderData.order.updatedAt }}</td>
-                </tr>
+            <h4 class="font-bold text-lg mb-2">Transaction Information</h4>
+            <table class="table">
+                <tbody>
+                    <tr>
+                        <th>Order ID</th>
+                        <td>{{ orderData.order.id }}</td>
+                    </tr>
+                    <tr>
+                        <th>Transaction ID</th>
+                        <td>{{ orderData.order.transactionID }}</td>
+                    </tr>
+                    <tr>
+                        <th>Payment Status</th>
+                        <td>{{ orderData.order.status }}</td>
+                    </tr>
+                    <tr>
+                        <th>Total Amount Purchased</th>
+                        <td>{{ orderSum }}x</td>
+                    </tr>
+                    <tr>
+                        <th>Amount Paid</th>
+                        <td>${{ (orderData.order.amount / 100).toFixed(2) }}</td>
+                    </tr>
+                    <tr>
+                        <th>Email</th>
+                        <td>
+                            <a :href="`mailto:${orderData.order.email}`">{{ orderData.order.email }}</a>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>Created</th>
+                        <td :title="useDate(orderData.order.createdAt)">{{ useNow(orderData.order.createdAt) }}</td>
+                    </tr>
+                    <tr>
+                        <th>Updated</th>
+                        <td :title="useDate(orderData.order.updatedAt)">{{ useNow(orderData.order.updatedAt) }}</td>
+                    </tr>
+                </tbody>
             </table>
 
-            <hr />
+            <hr class="my-4" />
 
-            <div>
-                <h4>Product Information</h4>
+            <div class="my-8">
+                <h4 class="font-bold text-lg mb-2">Product Information</h4>
                 <div>
                     <OrdersDetailProduct v-for="product in orderData.products" :key="product.info.id" :data="product" />
                 </div>
             </div>
 
-            <hr />
+            <hr class="my-4" />
 
             <div>
-                <h4>Shipping Information</h4>
-                <table>
-                    <tr>
-                        <th>Shipping Status</th>
-                        <td>{{ orderData.order.shipping }}</td>
-                    </tr>
-                    <tr>
-                        <th>Shipping Name</th>
-                        <td>{{ orderData.order.shippingName }}</td>
-                    </tr>
-                    <tr>
-                        <th>Country</th>
-                        <td>{{ orderData.order.country }}</td>
-                    </tr>
-                    <tr>
-                        <th>State/Province</th>
-                        <td>{{ orderData.order.state }}</td>
-                    </tr>
-                    <tr>
-                        <th>City</th>
-                        <td>{{ orderData.order.city }}</td>
-                    </tr>
-                    <tr>
-                        <th>Postal</th>
-                        <td>{{ orderData.order.postal }}</td>
-                    </tr>
-                    <tr v-if="orderData.order.line1">
-                        <th>Line 1</th>
-                        <td>{{ orderData.order.line1 }}</td>
-                    </tr>
-                    <tr v-if="orderData.order.line2">
-                        <th>Line 2</th>
-                        <td>{{ orderData.order.line2 }}</td>
-                    </tr>
-                </table>
+                <h4 class="font-bold text-lg mb-2">Transaction Information</h4>
 
-                <div>
-                    <iframe class="rounded-md" width="500" height="500" frameborder="0" :src="mapURL"></iframe>
-                </div>
+                <div class="lg:flex max-lg:my-4 max-lg:text-center">
+                    <table class="table lg:w-[50%]">
+                        <tbody>
+                            <tr>
+                                <th>Shipping Status</th>
+                                <td>{{ orderData.order.shipping }}</td>
+                            </tr>
+                            <tr>
+                                <th>Shipping Name</th>
+                                <td>{{ orderData.order.shippingName }}</td>
+                            </tr>
+                            <tr>
+                                <th>Country</th>
+                                <td>{{ orderData.order.country }}</td>
+                            </tr>
+                            <tr>
+                                <th>State/Province</th>
+                                <td>{{ orderData.order.state }}</td>
+                            </tr>
+                            <tr>
+                                <th>City</th>
+                                <td>{{ orderData.order.city }}</td>
+                            </tr>
+                            <tr>
+                                <th>Postal</th>
+                                <td>{{ orderData.order.postal }}</td>
+                            </tr>
+                            <tr v-if="orderData.order.line1">
+                                <th>Line 1</th>
+                                <td>{{ orderData.order.line1 }}</td>
+                            </tr>
+                            <tr v-if="orderData.order.line2">
+                                <th>Line 2</th>
+                                <td>{{ orderData.order.line2 }}</td>
+                            </tr>
+                        </tbody>
+                    </table>
 
-                <div>
-                    <button @click="openEdit">Edit Order</button>
-                    <button @click="deleteOrder">Delete Order</button>
+                    <div class="lg:w-[50%] max-lg:mt-8">
+                        <iframe class="rounded-md w-full h-[400px]" frameborder="0" :src="mapURL"></iframe>
+                    </div>
                 </div>
             </div>
-        </div>
-        <p v-else>{{ errmsg }}</p>
 
-        <RouterLink :to="`/@/users/${props.user}/orders`">Back to Orders</RouterLink>
+            <hr class="my-4" />
+
+            <div class="grid md:grid-cols-2 gap-2 my-4">
+                <button class="btn btn-primary" @click="openEdit">Edit Order</button>
+                <button class="btn btn-error" @click="deleteOrder">Delete Order</button>
+            </div>
+        </div>
+
+        <RouterLink class="btn btn-sm" :to="`/@/users/${props.user}/orders`">Back to Orders</RouterLink>
     </div>
 </template>
 
@@ -105,6 +119,7 @@
 import type { OrderDetails, OrderDetailsData } from "@/types/types/orders";
 import { useAuthStore } from "@/stores/auth";
 import { useRequest } from "@/use/useRequest";
+import { useDate, useNow } from "@/use/useDate";
 import { useToast } from "vue-toast-notification";
 import { useRouter } from "vue-router";
 import { computed, onMounted, ref } from "vue";
