@@ -30,7 +30,7 @@
 
         <div class="overflow-x-auto">
             <hr class="my-4" />
-            
+
             <img v-if="loading" class="animate-spin mx-auto my-4" src="/svg/loading-spinner.svg" width="50" />
             <p v-else-if="errmsg" class="font-bold my-4 text-center">{{ errmsg }}</p>
             <template v-else>

@@ -3,7 +3,11 @@
         <div>
             <div class="join block">
                 <button class="btn join-item w-[150px] max-md:hidden">Rating</button>
-                <select class="select md:join-item select-bordered min-w-[240px] max-md:w-[calc(100vw-1rem)]" v-model="control.rating" :disabled="loading">
+                <select
+                    class="select md:join-item select-bordered min-w-[240px] max-md:w-[calc(100vw-1rem)]"
+                    v-model="control.rating"
+                    :disabled="loading"
+                >
                     <option value="0">Any</option>
                     <option value="1">1 Star</option>
                     <option value="2">2 Star</option>
@@ -15,12 +19,20 @@
 
             <div class="join block my-2">
                 <button class="btn join-item w-[150px] max-md:hidden">User ID</button>
-                <DelayedInputItem classes="input md:join-item input-bordered min-w-[240px] max-md:w-[calc(100vw-1rem)]" v-model="control.userID" placehold="User ID" />
+                <DelayedInputItem
+                    classes="input md:join-item input-bordered min-w-[240px] max-md:w-[calc(100vw-1rem)]"
+                    v-model="control.userID"
+                    placehold="User ID"
+                />
             </div>
 
             <div class="join block mb-2">
                 <button class="btn join-item w-[150px] max-md:hidden">Product ID</button>
-                <DelayedInputItem classes="input md:join-item input-bordered min-w-[240px] max-md:w-[calc(100vw-1rem)]" v-model="control.productID" placehold="Product ID" />
+                <DelayedInputItem
+                    classes="input md:join-item input-bordered min-w-[240px] max-md:w-[calc(100vw-1rem)]"
+                    v-model="control.productID"
+                    placehold="Product ID"
+                />
             </div>
 
             <h4 class="my-4 text-sm opacity-70">Leave blank for any ID.</h4>

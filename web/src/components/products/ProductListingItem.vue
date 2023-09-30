@@ -14,9 +14,7 @@
         </td>
 
         <td>
-            <span v-for="tag in tags" :key="tag" class="btn btn-xs btn-primary ml-1 mb-1">
-                #{{ tag }}
-            </span>
+            <span v-for="tag in tags" :key="tag" class="btn btn-xs btn-primary ml-1 mb-1">#{{ tag }}</span>
         </td>
 
         <td>${{ (data.price / 100).toFixed(2) }}</td>

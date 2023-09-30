@@ -21,10 +21,10 @@
                 <p v-if="errmsg" class="font-bold my-4">{{ errmsg }}</p>
                 <p v-if="!validFile" class="font-bold my-4 text-error">File must be image/jpeg!</p>
             </div>
-            
+
             <input class="file-input file-input-bordered w-full" type="file" ref="file" :disabled="loading" @change="setAsset" />
             <button class="btn btn-primary w-full my-4" :disabled="!validFile || loading" @click="upload">Upload</button>
-            
+
             <img v-if="loading" class="animate-spin mx-auto my-4" src="/svg/loading-spinner.svg" width="50" />
         </DialogItem>
 

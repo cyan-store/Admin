@@ -3,11 +3,7 @@
         <img v-if="loading" class="animate-spin mx-auto" src="/svg/loading-spinner.svg" width="50" />
         <p class="text-center m-auto font-bold text-2xl" v-else-if="errmsg">{{ errmsg }}</p>
         <div v-else class="grid lg:grid-cols-4 grid-cols-2 grid-rows-1 gap-1 max-sm:hidden">
-            <span
-                v-for="(stat, n) in statsData"
-                :key="stat"
-                class="inline-block bg-primary p-4 text-base-200 font-bold rounded-md text-center"
-            >
+            <span v-for="(stat, n) in statsData" :key="stat" class="inline-block bg-primary p-4 text-base-200 font-bold rounded-md text-center">
                 <h4 class="text-2xl">{{ stat || 0 }}</h4>
                 <span class="capitalize">{{ n }}</span>
             </span>

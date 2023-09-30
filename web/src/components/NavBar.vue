@@ -1,12 +1,16 @@
 <template>
-    <div class="drawer" :class="{ 'drawer-open': auth.authorized && open, 'md:drawer-open': auth.authorized }">
+    <div class="drawer" :class="{ 'drawer-open': auth.authorized && open, 'md:drawer-open': auth.authorized && !path }">
         <input type="checkbox" class="drawer-toggle" />
         <div class="drawer-content">
             <div class="md:p-4 p-2" :class="{ 'max-md:hidden': auth.authorized && open }">
                 <slot />
             </div>
 
-            <button v-if="auth.authorized" class="btn btn-primary md:hidden fixed z-50 top-[calc(100vh-70px)] left-[calc(100vw-70px)] px-2" @click="open = !open">
+            <button
+                v-if="auth.authorized"
+                class="btn btn-primary md:hidden fixed z-50 top-[calc(100vh-70px)] left-[calc(100vw-70px)] px-2"
+                @click="open = !open"
+            >
                 <Bars3Icon class="h-6" />
             </button>
         </div>
@@ -88,7 +92,7 @@
 <script setup lang="ts">
 import { useAuthStore } from "@/stores/auth";
 import { useSite } from "@/use/useImage";
-import { RouterLink } from "vue-router";
+import { RouterLink, useRoute } from "vue-router";
 import { computed, ref } from "vue";
 
 import {
@@ -104,8 +108,11 @@ import {
 } from "@heroicons/vue/24/outline";
 
 const auth = useAuthStore();
+const route = useRoute();
 const open = ref(false);
+
 const logo = computed(() => useSite("logo/logo2.png"));
+const path = computed(() => route.fullPath === "/login");
 
 const logout = () => {
     open.value = false;

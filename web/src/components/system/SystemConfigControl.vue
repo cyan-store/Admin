@@ -68,9 +68,7 @@
                 </select>
             </div>
 
-            <button class="btn btn-primary mt-4 max-md:w-full" :disabled="isInvalidConfig || noneChanged" @click="updateSettings">
-                Update
-            </button>
+            <button class="btn btn-primary mt-4 max-md:w-full" :disabled="isInvalidConfig || noneChanged" @click="updateSettings">Update</button>
         </div>
     </div>
 </template>

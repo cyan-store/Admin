@@ -1,4 +1,5 @@
 import type { Ref } from "vue";
+import Swal from "sweetalert2";
 
 export async function useRequest<Type>(url: string, method: string, body: object | null, token: string, loading?: Ref<Boolean>) {
     const headers: {
@@ -22,15 +23,11 @@ export async function useRequest<Type>(url: string, method: string, body: object
     if (error) {
         console.error("[useRequest] fetch error:", error);
 
-        // TODO: Custom confirm & alert.
-        alert(
-            JSON.stringify({
-                title: "API Error",
-                text: "Could not make a request to the API",
-                icon: "error",
-                confirmButton: "Okay",
-            }),
-        );
+        Swal.fire({
+            title: "API Error",
+            text: "Could not make a request to the API",
+            icon: "error",
+        });
     } else {
         if (data.status != 200) {
             console.warn(`[api] Error with request ${url}!`);

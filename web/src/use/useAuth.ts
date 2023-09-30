@@ -16,6 +16,6 @@ export async function isAuthed() {
         return true;
     }
 
-    localStorage.removeItem("token");
+    auth.logout();
     return false;
 }
