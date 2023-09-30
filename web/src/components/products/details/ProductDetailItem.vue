@@ -1,54 +1,52 @@
 <template>
     <div>
-        <p v-if="loading"></p>
-        <div v-else-if="!errmsg">
-            <div>
-                <h4>{{ productData.title }}</h4>
-                <p>{{ productData.subtitle }}</p>
-            </div>
+        <img v-if="loading" class="animate-spin mx-auto my-4" src="/svg/loading-spinner.svg" width="50" />
+        <p v-else-if="errmsg" class="font-bold my-[10rem] text-center">{{ errmsg }}</p>
+        <div v-else-if="!errmsg && productData">
+            <h4 class="text-xl font-bold">{{ productData.title }}</h4>
+            <p class="text-sm opacity-60">{{ productData.subtitle }}</p>
 
-            <div>
+            <div class="my-4">
+                <p class="mb-4">{{ productData.description }}</p>
+
                 <ul v-if="tags?.length">
-                    <li v-for="tag in tags" :key="tag">#{{ tag }}</li>
+                    <li v-for="tag in tags" :key="tag" class="btn btn-sm btn-primary mr-1 mb-1">#{{ tag }}</li>
                 </ul>
-
-                <p>{{ productData.description }}</p>
             </div>
 
-            <div>
-                <ProductDetailAssets :images="imageData" @setImages="setImages" />
-            </div>
+            <ProductDetailAssets :images="imageData" @setImages="setImages" />
 
             <div>
                 <div>
-                    <b>Price: </b>
+                    <strong>Price: </strong>
                     <span>${{ ((productData.price || 1) / 100).toFixed(2) }}</span>
                 </div>
 
                 <div>
-                    <b>Stock: </b>
-                    <span>{{ productData.stock }}</span>
+                    <strong>Stock: </strong>
+                    <span>{{ useStock(productData.stock || "UNKNOWN") }}</span>
                 </div>
             </div>
 
             <div>
                 <div>
-                    <b>Created At: </b>
+                    <strong>Created At: </strong>
                     <span :title="useDate(productData.createdAt)">{{ useNow(productData.createdAt) }}</span>
                 </div>
 
                 <div>
-                    <b>Updated At: </b>
+                    <strong>Updated At: </strong>
                     <span :title="useDate(productData.updatedAt)">{{ useNow(productData.updatedAt) }}</span>
                 </div>
             </div>
 
-            <div>
-                <button @click="editProduct">Edit Product</button>
-                <button @click="deleteProduct">Delete Product</button>
+            <hr class="my-4" />
+
+            <div class="my-4">
+                <button class="btn btn-primary max-md:w-full md:mr-2 max-md:mb-2" @click="editProduct">Edit Product</button>
+                <button class="btn btn-error max-md:w-full" @click="deleteProduct">Delete Product</button>
             </div>
         </div>
-        <p v-else>{{ errmsg }}</p>
     </div>
 </template>
 
@@ -56,6 +54,7 @@
 import type { ProductDetail, ProductDetailData } from "@/types/types/products";
 import { useAuthStore } from "@/stores/auth";
 import { useDate, useNow } from "@/use/useDate";
+import { useStock } from "@/use/useDatabase";
 import { useRequest } from "@/use/useRequest";
 import { useToast } from "vue-toast-notification";
 import { useRouter } from "vue-router";

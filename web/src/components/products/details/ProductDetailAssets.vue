@@ -1,34 +1,42 @@
 <template>
     <div>
-        <pre>{{ props.images }}</pre>
-        <div>
-            <ul>
-                <li v-for="i in props.images" :key="i">
-                    <span>{{ i }}</span>
-                    <button @click="remove(i)">Remove</button>
-                </li>
-            </ul>
+        <hr class="my-4" />
 
-            <button @click="openUpload">Upload</button>
+        <div v-if="props.images.length" class="my-4 flex flex-wrap">
+            <div v-for="i in props.images" :key="i" class="avatar m-2">
+                <div class="w-24 rounded-lg">
+                    <img :src="useAsset(i)" />
+                    <button @click="remove(i)" class="z-50 absolute top-0 l-0 w-full h-full bg-[#000] opacity-0 hover:opacity-60 transition-opacity">
+                        <TrashIcon class="stroke-error h-8 m-auto" />
+                    </button>
+                </div>
+            </div>
         </div>
+        <p v-else class="my-4 italic">Product has no images.</p>
+
+        <button class="btn btn-sm" @click="openUpload">Upload</button>
 
         <DialogItem :open="open" @exit="openUpload">
             <div>
-                <p v-if="loading">Loading...</p>
-                <p v-else-if="errmsg">{{ errmsg }}</p>
-
-                <p v-if="!validFile">File must be image/jpeg!</p>
+                <p v-if="errmsg" class="font-bold my-4">{{ errmsg }}</p>
+                <p v-if="!validFile" class="font-bold my-4 text-error">File must be image/jpeg!</p>
             </div>
-
-            <input type="file" ref="file" :disabled="loading" @change="setAsset" />
-            <button :disabled="!validFile || loading" @click="upload">Upload</button>
+            
+            <input class="file-input file-input-bordered w-full" type="file" ref="file" :disabled="loading" @change="setAsset" />
+            <button class="btn btn-primary w-full my-4" :disabled="!validFile || loading" @click="upload">Upload</button>
+            
+            <img v-if="loading" class="animate-spin mx-auto my-4" src="/svg/loading-spinner.svg" width="50" />
         </DialogItem>
+
+        <hr class="my-4" />
     </div>
 </template>
 
 <script lang="ts" setup>
 import type { RemoveResponse, UploadResponse } from "@/types/types/assets";
+import { TrashIcon } from "@heroicons/vue/24/outline";
 import { useAuthStore } from "@/stores/auth";
+import { useAsset } from "@/use/useImage";
 import { useRequest } from "@/use/useRequest";
 import { useRoute } from "vue-router";
 import { computed, ref } from "vue";
@@ -86,6 +94,8 @@ const upload = async () => {
             open.value = true;
 
             openUpload();
+        } else {
+            throw new Error(`Invalid code: ${adata.status}`);
         }
     } catch (err) {
         console.error("Upload error:", err);

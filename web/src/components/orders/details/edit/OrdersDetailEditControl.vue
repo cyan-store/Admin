@@ -53,6 +53,7 @@
 
                 <div class="my-4">
                     <h4 class="font-bold text-lg mb-2" :class="modifiedClass('transactionID')">Transaction ID</h4>
+
                     <input
                         class="input input-bordered max-md:w-full max-md:mb-4 min-w-[240px]"
                         :class="{ 'input-error': invalidInput('transactionID') }"

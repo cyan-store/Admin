@@ -14,8 +14,8 @@
         </td>
 
         <td>
-            <span v-for="tag in tags" :key="tag" class="tag">
-                {{ tag }}
+            <span v-for="tag in tags" :key="tag" class="btn btn-xs btn-primary ml-1 mb-1">
+                #{{ tag }}
             </span>
         </td>
 

@@ -1,51 +1,85 @@
 <template>
     <div>
-        <p v-if="loading">Loading...</p>
+        <img v-if="loading" class="animate-spin mx-auto my-4" src="/svg/loading-spinner.svg" width="50" />
+        <p v-else-if="errmsg" class="font-bold my-[10rem] text-center">{{ errmsg }}</p>
         <div v-else-if="!errmsg && productData">
-            <div>
-                <h4 :class="modifiedClass('title')">Title</h4>
-                <p v-if="invalidInput('title')">Invalid title.</p>
+            <div class="my-4">
+                <h4 class="font-bold text-lg mb-2" :class="modifiedClass('title')">Title</h4>
 
-                <input type="text" v-model="productDetails.title" maxlength="150" />
+                <input
+                    class="input input-bordered max-md:w-full max-md:mb-4 min-w-[240px]"
+                    :class="{ 'input-error': invalidInput('title') }"
+                    type="text"
+                    v-model="productDetails.title"
+                    maxlength="150"
+                />
+
+                <p class="text-error font-bold" v-if="invalidInput('title')">Invalid title.</p>
             </div>
 
-            <div>
-                <h4 :class="modifiedClass('subtitle')">Subtitle</h4>
-                <p v-if="invalidInput('subtitle')">Invalid subtitle.</p>
+            <div class="my-4">
+                <h4 class="font-bold text-lg mb-2" :class="modifiedClass('subtitle')">Subtitle</h4>
 
-                <input type="text" v-model="productDetails.subtitle" maxlength="150" />
+                <input
+                    class="input input-bordered max-md:w-full max-md:mb-4 min-w-[240px]"
+                    :class="{ 'input-error': invalidInput('subtitle') }"
+                    type="text"
+                    v-model="productDetails.subtitle"
+                    maxlength="150"
+                />
+
+                <p class="text-error font-bold" v-if="invalidInput('subtitle')">Invalid subtitle.</p>
             </div>
 
-            <div>
-                <h4 :class="modifiedClass('description')">Description</h4>
-                <p v-if="invalidInput('description')">Invalid description.</p>
+            <div class="my-4">
+                <h4 class="font-bold text-lg mb-2" :class="modifiedClass('description')">Description</h4>
 
-                <textarea v-model="productDetails.description"></textarea>
+                <textarea
+                    class="textarea textarea-bordered max-md:w-full max-md:mb-4 min-w-[240px]"
+                    :class="{ 'textarea-error': invalidInput('description') }"
+                    v-model="productDetails.description"
+                ></textarea>
+
+                <p class="text-error font-bold" v-if="invalidInput('description')">Invalid description.</p>
             </div>
 
-            <div>
-                <h4 :class="modifiedClass('tags')">Tags</h4>
+            <hr class="my-4" />
+
+            <div class="my-4">
+                <h4 class="font-bold text-lg mb-2" :class="modifiedClass('tags')">Tags</h4>
                 <ul>
                     <li v-for="tag in productDetails.tags" :key="tag">
-                        <button @click="removeTag(tag)">Remove</button>
-                        <span>#{{ tag }}</span>
+                        <button class="btn btn-error min-h-[1.5rem] h-[1.5rem] px-[3px]" @click="removeTag(tag)">
+                            <TrashIcon class="stroke-base-300 h-[1rem]" />
+                        </button>
+
+                        <span class="btn btn-xs btn-primary ml-1 align-top">#{{ tag }}</span>
                     </li>
                 </ul>
 
-                <button @click="addTag">Add Tag</button>
+                <button class="btn btn-sm my-4" @click="addTag">Add Tag</button>
             </div>
 
-            <div>
-                <h4 :class="modifiedClass('price')">Price</h4>
-                <p>${{ (productDetails.price / 100).toFixed(2) }} (value below is displayed in cents)</p>
-                <p v-if="invalidInput('price')">Invalid price.</p>
+            <hr class="my-4" />
 
-                <input type="number" v-model="productDetails.price" />
+            <div class="my-4">
+                <h4 class="font-bold text-lg mb-2" :class="modifiedClass('price')">Price</h4>
+                <p class="text-sm opacity-60 my-4">${{ (productDetails.price / 100).toFixed(2) }} (value below is displayed in cents)</p>
+
+                <input
+                    class="input input-bordered max-md:w-full max-md:mb-4 min-w-[240px]"
+                    :class="{ 'input-error': invalidInput('price') }"
+                    type="number"
+                    v-model="productDetails.price"
+                />
+
+                <p class="text-error font-bold" v-if="invalidInput('price')">Invalid price.</p>
             </div>
 
-            <div>
-                <h4 :class="modifiedClass('stock')">Stock</h4>
-                <select v-model="productDetails.stock">
+            <div class="my-4">
+                <h4 class="font-bold text-lg mb-2" :class="modifiedClass('stock')">Stock</h4>
+
+                <select class="select select-bordered max-md:w-full max-md:mb-4 min-w-[240px]" v-model="productDetails.stock">
                     <option value="IN_STOCK">In Stock</option>
                     <option value="OUT_STOCK">Out of Stock</option>
                     <option value="DISCONTINUED">Discontinued</option>
@@ -53,18 +87,15 @@
                 </select>
             </div>
 
-            <div>
-                <pre>{{ productDiffs }}</pre>
-                <button :disabled="isInvalidProduct" @click="setProduct">Update</button>
-            </div>
+            <button class="btn btn-success max-md:w-full mb-4" :disabled="isInvalidProduct" @click="setProduct">Update</button>
         </div>
-        <p v-else>{{ errmsg }}</p>
     </div>
 </template>
 
 <script lang="ts" setup>
 import type { ProductDetail, ProductDetailData } from "@/types/types/products";
 import type { Response } from "@/types";
+import { TrashIcon } from "@heroicons/vue/24/outline";
 import { useAuthStore } from "@/stores/auth";
 import { useRequest } from "@/use/useRequest";
 import { useToast } from "vue-toast-notification";
@@ -207,7 +238,7 @@ const invalidInput = (option: keyof typeof valid) => {
 const modifiedClass = (...args: string[]) => {
     for (const a of args) {
         if (productDiffs.value.includes(a)) {
-            return "italic before:content-['*'] after:content-['*'] opacity-60";
+            return "italic before:content-['*']";
         }
     }
 

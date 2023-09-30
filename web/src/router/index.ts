@@ -3,6 +3,7 @@ import { isAuthed } from "@/use/useAuth";
 
 import auth from "@/router/routes/auth";
 import index from "@/router/routes/panel/index";
+import NotFound from "@/views/NotFound.vue";
 
 // TODO: 404 page
 const router = createRouter({
@@ -18,6 +19,13 @@ const router = createRouter({
             path: "/@",
             meta: { requiresAuth: true },
             children: index,
+        },
+
+        {
+            path: "/:pathMatch(.*)*",
+            name: "not-found",
+            component: NotFound,
+            meta: { title: "Not Found" },
         },
     ],
 });

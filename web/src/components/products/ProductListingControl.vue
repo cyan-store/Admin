@@ -58,7 +58,7 @@ const router = useRouter();
 const filter = reactive({
     search: "",
     page: 0,
-    sort: "asc",
+    sort: "desc",
 });
 
 const loading = ref(false);

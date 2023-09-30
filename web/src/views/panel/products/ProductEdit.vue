@@ -1,9 +1,10 @@
 <template>
     <div>
-        <h2>Product Edit</h2>
+        <h2 class="text-3xl font-bold mb-2">Edit Product Details</h2>
+        <p class="text-sm font-bold opacity-60 mb-4">Update/modify a product.</p>
 
         <ProductDetailEditControl :id="product" />
-        <RouterLink :to="`/@/products/${product}`">Back to Details</RouterLink>
+        <RouterLink class="btn btn-sm" :to="`/@/products/${product}`">Back to Details</RouterLink>
     </div>
 </template>
 
