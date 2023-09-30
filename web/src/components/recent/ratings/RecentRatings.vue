@@ -7,9 +7,12 @@
         <td>
             <RouterLink :to="`/@/users/${data.user}`">{{ data.user }}</RouterLink>
         </td>
+
         <td>{{ data.name }}</td>
-        <!-- TODO: Use vue-stars -->
-        <td>{{ data.rating }}*</td>
+
+        <td>
+            <StarRating :star-size="10" :rating="data.rating" :read-only="true" :show-rating="false" />
+        </td>
 
         <td :class="{ 'font-bold': !data?.description }">{{ review }}</td>
         <td :title="useDate(data.createdAt)">{{ useNow(data.createdAt) }}</td>
@@ -26,6 +29,8 @@ import type { RecentRatingsData } from "@/types/types/recent";
 import { useDate, useNow } from "@/use/useDate";
 import { useRouter } from "vue-router";
 import { computed } from "vue";
+
+import StarRating from "vue-star-rating";
 
 const router = useRouter();
 const props = defineProps<{

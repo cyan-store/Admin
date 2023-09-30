@@ -8,11 +8,10 @@
                 <span>{{ ratingData.name }}</span>
             </div>
 
-            <div>
-                <strong>Rating: </strong>
+            <div class="flex">
+                <strong class="mr-2">Rating:</strong>
 
-                <!-- TODO: vue-stars -->
-                <span>{{ ratingData.rating }}*</span>
+                <StarRating class="relative bottom-[2px]" :star-size="15" :rating="ratingData.rating" :read-only="true" :show-rating="false" />
             </div>
 
             <div>
@@ -20,8 +19,15 @@
                     <strong>Description: </strong>
                     <span class="italic">No content provided.</span>
                 </template>
-                <textarea v-else class="textarea textarea-bordered my-4 max-md:w-[calc(100vw-1rem)]" :value="ratingData.description" readonly></textarea>
+                <textarea
+                    v-else
+                    class="textarea textarea-bordered my-4 max-md:w-[calc(100vw-1rem)]"
+                    :value="ratingData.description"
+                    readonly
+                ></textarea>
             </div>
+
+            <hr class="my-4" />
 
             <div>
                 <strong>Created: </strong>
@@ -40,7 +46,6 @@
         </div>
 
         <div>
-            <hr class="my-4" />
             <RouterLink class="btn btn-sm" :to="`/@/users/${props.user}/ratings`">Back to Ratings</RouterLink>
         </div>
     </div>
@@ -55,6 +60,8 @@ import { useDate, useNow } from "@/use/useDate";
 import { useToast } from "vue-toast-notification";
 import { useRouter } from "vue-router";
 import { onMounted, ref } from "vue";
+
+import StarRating from "vue-star-rating";
 
 const auth = useAuthStore();
 

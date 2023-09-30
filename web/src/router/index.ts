@@ -5,7 +5,6 @@ import auth from "@/router/routes/auth";
 import index from "@/router/routes/panel/index";
 import NotFound from "@/views/NotFound.vue";
 
-// TODO: 404 page
 const router = createRouter({
     history: createWebHistory(import.meta.env.BASE_URL),
     routes: [

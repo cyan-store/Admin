@@ -11,8 +11,10 @@
             <strong>No content provided.</strong>
         </td>
 
-        <!-- TODO: vue-stars -->
-        <td>{{ data.rating }}*</td>
+        <td>
+            <StarRating :star-size="10" :rating="data.rating" :read-only="true" :show-rating="false" />
+        </td>
+
         <td>
             <RouterLink :to="`/@/products/${data.productID}`">{{ data.productID }}</RouterLink>
         </td>
@@ -29,6 +31,8 @@
 import type { UserRatingData } from "@/types/types/ratings";
 import { useDate, useNow } from "@/use/useDate";
 import { useRoute, useRouter } from "vue-router";
+
+import StarRating from "vue-star-rating";
 
 const props = defineProps<{ data: UserRatingData }>();
 const router = useRouter();
