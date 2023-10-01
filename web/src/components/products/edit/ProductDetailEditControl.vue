@@ -101,6 +101,7 @@ import { useRequest } from "@/use/useRequest";
 import { useToast } from "vue-toast-notification";
 import { useRouter } from "vue-router";
 import { computed, onMounted, ref, reactive } from "vue";
+import Swal from "sweetalert2";
 import Joi from "joi";
 
 const auth = useAuthStore();
@@ -185,12 +186,21 @@ const setProduct = async () => {
     errmsg.value = "HTTP Error.";
 };
 
-// TODO: Custom prompt (using swal)
-// TODO: Improved tag validation
-const addTag = () => {
-    const tag = String(prompt("Enter tag name:"));
+const addTag = async () => {
+    const { value } = await Swal.fire({
+        title: "New Tag",
+        input: "text",
+        inputLabel: "Enter tag name:",
+        showCancelButton: true,
+        inputValidator: (value) => {
+            if (!value) return "Empty tag!";
+        },
+    });
 
-    if (["undefined", "null", ""].includes(tag) || tag.length >= 25 || tag.split("").includes(",")) {
+    const tag = value.toLowerCase();
+    const tagc = tag.split("");
+
+    if (tag.length >= 25 || tagc.includes(",") || tagc.includes(" ")) {
         $toast.error("Invalid tag name.");
         return;
     }

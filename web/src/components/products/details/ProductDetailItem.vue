@@ -59,6 +59,7 @@ import { useRequest } from "@/use/useRequest";
 import { useToast } from "vue-toast-notification";
 import { useRouter } from "vue-router";
 import { computed, onMounted, ref } from "vue";
+import Swal from "sweetalert2";
 
 import ProductDetailAssets from "./ProductDetailAssets.vue";
 
@@ -93,20 +94,28 @@ const getProduct = async () => {
     errmsg.value = "HTTP Error.";
 };
 
-const deleteProduct = async () => {
-    if (!confirm("Are you sure you want to remove this product?")) return;
-    const pdata = await useRequest<Response>(`/products/${props.id}`, "DELETE", null, auth.token, loading);
+const deleteProduct = () => {
+    Swal.fire({
+        title: "Are you sure you want to remove this product?",
+        icon: "warning",
+        text: "This will NOT remove orders/ratings containing this product. Consider setting the product to hidden/discontinued.",
+        showCancelButton: true,
+        confirmButtonText: "Remove",
+    }).then(async (result) => {
+        if (!result.isConfirmed) return;
+        const pdata = await useRequest<Response>(`/products/${props.id}`, "DELETE", null, auth.token, loading);
 
-    if (!pdata.error && pdata.data.status === 200) {
-        $toast.success(`Removed ${productData.value.title}.`);
-        productData.value = {};
-        errmsg.value = "";
-        router.push(`/@/products`);
+        if (!pdata.error && pdata.data.status === 200) {
+            $toast.success(`Removed ${productData.value.title}.`);
+            productData.value = {};
+            errmsg.value = "";
+            router.push(`/@/products`);
 
-        return;
-    }
+            return;
+        }
 
-    $toast.error("Could not remove product: HTTP Error.");
+        $toast.error("Could not remove product: HTTP Error.");
+    });
 };
 
 const tags = computed(() => {

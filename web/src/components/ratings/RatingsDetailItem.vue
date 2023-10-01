@@ -60,7 +60,7 @@ import { useDate, useNow } from "@/use/useDate";
 import { useToast } from "vue-toast-notification";
 import { useRouter } from "vue-router";
 import { onMounted, ref } from "vue";
-
+import Swal from "sweetalert2";
 import StarRating from "vue-star-rating";
 
 const auth = useAuthStore();
@@ -95,20 +95,27 @@ const getRating = async () => {
     errmsg.value = "HTTP Error.";
 };
 
-const deleteRating = async () => {
-    if (!confirm("Are you sure you want to remove this rating?")) return;
-    const rdata = await useRequest<Response>(`/users/${props.user}/ratings/${props.rating}`, "DELETE", null, auth.token, loading);
+const deleteRating = () => {
+    Swal.fire({
+        title: "Are you sure you want to remove this rating?",
+        icon: "info",
+        showCancelButton: true,
+        confirmButtonText: "Remove",
+    }).then(async (result) => {
+        if (!result.isConfirmed) return;
+        const rdata = await useRequest<Response>(`/users/${props.user}/ratings/${props.rating}`, "DELETE", null, auth.token, loading);
 
-    if (!rdata.error && rdata.data.status === 200) {
-        ratingData.value = {};
-        errmsg.value = "";
+        if (!rdata.error && rdata.data.status === 200) {
+            ratingData.value = {};
+            errmsg.value = "";
 
-        $toast.success(`Removed ${props.rating}.`);
-        router.push(`/@/users/${props.user}/ratings`);
-        return;
-    }
+            $toast.success(`Removed ${props.rating}.`);
+            router.push(`/@/users/${props.user}/ratings`);
+            return;
+        }
 
-    $toast.error("Could not remove rating: HTTP Error.");
+        $toast.error("Could not remove rating: HTTP Error.");
+    });
 };
 
 const productPage = () => router.push(`/@/products/${ratingData.value.productID}`);

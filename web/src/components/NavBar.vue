@@ -94,6 +94,7 @@ import { useAuthStore } from "@/stores/auth";
 import { useSite } from "@/use/useImage";
 import { RouterLink, useRoute } from "vue-router";
 import { computed, ref } from "vue";
+import Swal from "sweetalert2";
 
 import {
     Bars3Icon,
@@ -117,8 +118,15 @@ const path = computed(() => route.fullPath === "/login");
 const logout = () => {
     open.value = false;
 
-    if (confirm("Are you sure you want to logout?")) {
-        auth.logout();
-    }
+    Swal.fire({
+        title: "Are you sure you want to logout?",
+        icon: "info",
+        showCancelButton: true,
+        confirmButtonText: "Logout",
+    }).then((result) => {
+        if (result.isConfirmed) {
+            auth.logout();
+        }
+    });
 };
 </script>

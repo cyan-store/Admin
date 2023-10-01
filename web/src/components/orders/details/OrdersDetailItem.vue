@@ -123,6 +123,7 @@ import { useDate, useNow } from "@/use/useDate";
 import { useToast } from "vue-toast-notification";
 import { useRouter } from "vue-router";
 import { computed, onMounted, ref } from "vue";
+import Swal from "sweetalert2";
 
 import OrdersDetailProduct from "./OrdersDetailProduct.vue";
 
@@ -161,21 +162,28 @@ const openEdit = () => {
     router.push(`/@/users/${props.user}/orders/${props.order}/edit`);
 };
 
-// TODO: Warn user that this should only be done under very specific circumstances
-const deleteOrder = async () => {
-    if (!confirm("Are you sure you want to remove this order?")) return;
-    const rdata = await useRequest<Response>(`/users/${props.user}/orders/${props.order}`, "DELETE", null, auth.token, loading);
+const deleteOrder = () => {
+    Swal.fire({
+        title: "Are you sure you want to remove this order?",
+        icon: "warning",
+        text: "This should only be done under very specific circumstances. ",
+        showCancelButton: true,
+        confirmButtonText: "Remove",
+    }).then(async (result) => {
+        if (!result.isConfirmed) return;
+        const rdata = await useRequest<Response>(`/users/${props.user}/orders/${props.order}`, "DELETE", null, auth.token, loading);
 
-    if (!rdata.error && rdata.data.status === 200) {
-        $toast.success(`Removed order from ${orderData.value.order?.email}.`);
-        orderData.value = {};
-        errmsg.value = "";
+        if (!rdata.error && rdata.data.status === 200) {
+            $toast.success(`Removed order from ${orderData.value.order?.email}.`);
+            orderData.value = {};
+            errmsg.value = "";
 
-        router.push(`/@/users/${props.user}/orders`);
-        return;
-    }
+            router.push(`/@/users/${props.user}/orders`);
+            return;
+        }
 
-    $toast.error("Could not remove order: HTTP Error.");
+        $toast.error("Could not remove order: HTTP Error.");
+    });
 };
 
 const mapURL = computed(() => {

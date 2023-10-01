@@ -40,6 +40,7 @@ import { useAsset } from "@/use/useImage";
 import { useRequest } from "@/use/useRequest";
 import { useRoute } from "vue-router";
 import { computed, ref } from "vue";
+import Swal from "sweetalert2";
 
 import DialogItem from "@/components/general/DialogItem.vue";
 
@@ -111,23 +112,35 @@ const upload = async () => {
     loading.value = false;
 };
 
-const remove = async (id: string) => {
-    if (!confirm("Are you sure?")) return;
+const remove = (id: string) => {
+    Swal.fire({
+        title: "Are you sure you want to remove this image?",
+        icon: "info",
+        showCancelButton: true,
+        confirmButtonText: "Remove",
+    }).then(async (result) => {
+        if (!result.isConfirmed) return;
+        const params = new URLSearchParams({ asset: id });
+        const rdata = await useRequest<RemoveResponse>(
+            `/products/${route.params.id}/upload?${params.toString()}`,
+            "DELETE",
+            null,
+            auth.token,
+            loading,
+        );
 
-    const params = new URLSearchParams({ asset: id });
-    const rdata = await useRequest<RemoveResponse>(`/products/${route.params.id}/upload?${params.toString()}`, "DELETE", null, auth.token, loading);
+        if (!rdata.error && rdata.data.status === 200) {
+            errmsg.value = "";
+            open.value = true;
 
-    if (!rdata.error && rdata.data.status === 200) {
-        errmsg.value = "";
-        open.value = true;
+            emits("setImages", rdata.json.data.images);
+            openUpload();
 
-        emits("setImages", rdata.json.data.images);
-        openUpload();
+            return;
+        }
 
-        return;
-    }
-
-    errmsg.value = "HTTP Error.";
+        errmsg.value = "HTTP Error.";
+    });
 };
 
 const validFile = computed(() => asset.value?.type === "image/jpeg");

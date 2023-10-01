@@ -25,8 +25,8 @@ export async function useRequest<Type>(url: string, method: string, body: object
 
         Swal.fire({
             title: "API Error",
-            text: "Could not make a request to the API",
             icon: "error",
+            text: "Could not make a request to the API",
         });
     } else {
         if (data.status != 200) {
