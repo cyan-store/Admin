@@ -1,7 +1,7 @@
 <template>
     <tr>
         <td>
-            <RouterLink :to="`/@/users/${$route.params.id}/orders/${data.id}`">{{ data.id }}</RouterLink>
+            <RouterLink class="text-info hover:opacity-60 font-bold" :to="`/@/users/${$route.params.id}/orders/${data.id}`">{{ data.id }}</RouterLink>
         </td>
 
         <td>
@@ -10,7 +10,7 @@
                 <ul class="menu dropdown-content z-[1] bg-base-200 rounded-box">
                     <li v-for="product in productList" :key="product">
                         <span>
-                            <RouterLink :to="`/@/products/${product}`">{{ product }}</RouterLink>
+                            <RouterLink class="text-info hover:opacity-60 font-bold" :to="`/@/products/${product}`">{{ product }}</RouterLink>
                             <strong> x{{ quantityList[productList.indexOf(product)] }}</strong>
                         </span>
                     </li>

@@ -1,7 +1,9 @@
 <template>
     <tr>
         <td>
-            <RouterLink :to="`/@/users/${$route.params.id}/ratings/${data.id}`">{{ data.id }}</RouterLink>
+            <RouterLink class="text-info hover:opacity-60 font-bold" :to="`/@/users/${$route.params.id}/ratings/${data.id}`">
+                {{ data.id }}
+            </RouterLink>
         </td>
 
         <td>{{ data.name }}</td>
@@ -16,7 +18,9 @@
         </td>
 
         <td>
-            <RouterLink :to="`/@/products/${data.productID}`">{{ data.productID }}</RouterLink>
+            <RouterLink class="text-info hover:opacity-60 font-bold" :to="`/@/products/${data.productID}`">
+                {{ data.productID }}
+            </RouterLink>
         </td>
 
         <td :title="useDate(data.createdAt)">{{ useNow(data.createdAt) }}</td>

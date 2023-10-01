@@ -1,7 +1,7 @@
 <template>
     <tr>
         <td>
-            <RouterLink :to="`/@/users/${data.userID}`">{{ data.userID }}</RouterLink>
+            <RouterLink class="text-info hover:opacity-60 font-bold" :to="`/@/users/${data.userID}`">{{ data.userID }}</RouterLink>
         </td>
         <td>{{ data.transactionID }}</td>
         <td>{{ products }}</td>

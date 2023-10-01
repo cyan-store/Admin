@@ -11,7 +11,7 @@
         <td>{{ data.email_verified ? "Yes" : "No" }}</td>
         <td>{{ data.user_id }}</td>
         <td>{{ data.logins_count }}</td>
-        <td>{{ data.last_login }}</td>
+        <td :title="useDate(data.last_login)">{{ useNow(data.last_login) }}</td>
 
         <td>
             <button class="btn btn-xs" @click="details">Details</button>
@@ -21,6 +21,7 @@
 
 <script lang="ts" setup>
 import type { Auth0UserData } from "@/types/types/users";
+import { useDate, useNow } from "@/use/useDate";
 import { useRouter } from "vue-router";
 
 const router = useRouter();
